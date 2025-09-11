@@ -1,13 +1,12 @@
-//
-//  HistoryViewModel.swift
-//  RoyaApp
-//
-//  Created by Alumno on 11/09/25.
-//
-
-
 import Foundation
 import SwiftUI
+
+// Nuevo struct para mapear el JSON del backend
+struct ImageData: Codable {
+    let id: Int
+    let filename: String
+    let url: String
+}
 
 @MainActor
 class HistoryViewModel: ObservableObject {
@@ -24,7 +23,7 @@ class HistoryViewModel: ObservableObject {
     }
     
     func loadAPI() async throws {
-        guard let url = URL(string: "http://127.0.0.1:3000/images") else {
+        guard let url = URL(string: "http://127.0.0.1:8000/images") else {
             throw URLError(.badURL)
         }
         
@@ -36,14 +35,16 @@ class HistoryViewModel: ObservableObject {
         }
         
         do {
-            // La API devuelve un array de URLs públicas
-            let decoded = try JSONDecoder().decode([String].self, from: data)
+            // Decodificamos como array de ImageData
+            let decoded = try JSONDecoder().decode([ImageData].self, from: data)
             
-            // Agrupamos por fecha si quieres simular historial
-            // Aquí solo como ejemplo asumimos que cada 3 imágenes = una fecha
+            // Extraemos solo las URLs
+            let urls = decoded.map { $0.url }
+            
+            // Agrupamos por fecha para simular historial
             var temp = [Historial]()
             var currentDate = 1
-            for chunk in decoded.chunked(into: 3) {
+            for chunk in urls.chunked(into: 3) {
                 let h = Historial(date: "Sep \(currentDate), 2025", images: chunk)
                 temp.append(h)
                 currentDate += 1
