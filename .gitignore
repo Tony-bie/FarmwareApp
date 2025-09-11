@@ -60,3 +60,11 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
+
+*.xcuserstate
+
+# Ignorar archivos de macOS
+.DS_Store
+
+# Ignorar archivos de usuario de Xcode
+*.xcuserstate
