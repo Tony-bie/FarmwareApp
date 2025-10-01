@@ -29,7 +29,7 @@ struct format_map<Content: View>: View{
                                 .stroke(Color.stroke, lineWidth: 1)
                         )
                 )
-                .shadow(color: .black.opacity(0.06), radius: 12, x: 0, y: 6)
+                .shadow(color: .black.opacity(0.16), radius: 12, x: 0, y: 6)
         }
 }
 
