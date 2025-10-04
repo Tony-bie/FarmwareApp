@@ -48,7 +48,8 @@ struct RegisterView : View {
         isEmailNonEmpty && isEmailValid &&
         isPasswordNonEmpty && passwordsMatch
     }
-    
+    @StateObject private var viewModel = RegisterViewModel()
+
     var body: some View {
         NavigationStack{
             ZStack{
@@ -140,7 +141,24 @@ struct RegisterView : View {
                     validityTag(isValid: passwordsMatch, text: passwordsMatch ? "Passwords match" : "Passwords don’t match")
                     Button{
                         guard isvalidEverything else {return}
-                    } label: {
+                        let formatter = DateFormatter()
+                            formatter.dateFormat = "yyyy-MM-dd"
+                        let birthdayString = formatter.string(from: dateAdded)
+
+                        let newUser = RegisterUser(
+                            first_name: firstName,
+                            last_name: lastName,
+                            email: email,
+                            password: password,
+                            confirm_password: confirm,
+                            birthday: birthdayString
+                        )
+
+                        Task {
+                            await viewModel.register(user: newUser)
+                        }
+                    }
+                    label: {
                         Text("Create account")
                             .fontWeight(.semibold)
                             .frame(maxWidth: .infinity)
@@ -149,6 +167,16 @@ struct RegisterView : View {
 
                     }
                     .disabled(!isvalidEverything)
+                    if let errorMessage = viewModel.errorMessage {
+                        Text(errorMessage)
+                            .foregroundColor(.red)
+                            .font(.footnote)
+                    }
+                    if viewModel.registrationSuccess {
+                        Text("User registered successfully!")
+                            .foregroundColor(.green)
+                            .font(.footnote)
+                    }
                     
                 }
             }

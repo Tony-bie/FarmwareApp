@@ -8,7 +8,7 @@ struct RegisterUser: Codable {
     let email: String
     let password: String
     let confirm_password: String
-    let bithday: String
+    let birthday: String
 }
 
 @MainActor
@@ -17,7 +17,7 @@ class RegisterViewModel: ObservableObject {
     @Published var errorMessage: String?
 
     func register(user: RegisterUser) async {
-        guard let url = URL(string: "http://10.22.224.158:8000/register") else {
+        guard let url = URL(string: "http://127.0.0.1:8000/register") else {
             errorMessage = "URL inválida"
             return
         }
