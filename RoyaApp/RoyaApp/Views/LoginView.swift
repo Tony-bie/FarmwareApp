@@ -15,7 +15,9 @@ struct LoginView : View {
     @State private var email     = ""
     @State private var password  = ""
     @State private var showPass  = false
-
+    @StateObject private var loginVM = LoginModel()
+    
+    @State private var showError = false
     
     var body: some View {
         NavigationStack{
@@ -56,6 +58,21 @@ struct LoginView : View {
                     .padding(.leading,15)
                     .padding(.trailing, 15)
                     
+                    Button{
+                        let loginUser = LoginRequest(email: email.trimmingCharacters(in: .whitespacesAndNewlines).lowercased(), password: password)
+                        Task {
+                            await loginVM.login(user: loginUser)
+                        }
+                    }
+                    label: {
+                        Text("Login")
+                            .fontWeight(.semibold)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                        
+                    }
+                    
                     HStack(alignment: .center){
                         Button(action:{forgotPassword.toggle()}){
                             Text("Did you forget your password?")
@@ -72,8 +89,17 @@ struct LoginView : View {
                     }
                     .padding(.horizontal)
                     .padding(.top, 4)
-                }            }
+                }
+            }
         }
+        .onChange(of: loginVM.errorMessage){ _, newValue in
+                showError = newValue != nil
+            }
+            .alert("Login error", isPresented: $showError) {
+                Button("OK", role: .cancel) { showError = false }
+            } message: {
+                Text(loginVM.errorMessage ?? "Ocurrió un error")
+            }
     }
 }
 
