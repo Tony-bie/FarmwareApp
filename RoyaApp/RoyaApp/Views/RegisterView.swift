@@ -16,6 +16,8 @@ struct RegisterView : View {
     @State private var dateAdded = Calendar.current.date(byAdding: .year, value: -18, to: .now) ?? .now
     @State private var showPass  = false
     @State private var showConfirmPass = false
+    @State private var showError = false
+    @State private var showSuccess = false
     
     private var isEmailValid: Bool{
         let regex = /.+@.+\..+/
@@ -167,20 +169,31 @@ struct RegisterView : View {
 
                     }
                     .disabled(!isvalidEverything)
-                    if let errorMessage = viewModel.errorMessage {
-                        Text(errorMessage)
-                            .foregroundColor(.red)
-                            .font(.footnote)
-                    }
-                    if viewModel.registrationSuccess {
-                        Text("User registered successfully!")
-                            .foregroundColor(.green)
-                            .font(.footnote)
-                    }
+                    .onChange(of: viewModel.errorMessage){ _, newValue in
+                            showError = newValue != nil
+                        }
+                        .alert("Login error", isPresented: $showError) {
+                            Button("OK", role: .cancel) { showError = false }
+                        } message: {
+                            Text(viewModel.errorMessage ?? "Ocurrió un error")
+                        }
                     
                 }
             }
             
+        }
+        .onChange(of: viewModel.registrationSuccess) { _, newValue in
+            if newValue {
+                showSuccess = true
+            }
+        }
+        .alert("Registro exitoso", isPresented: $showSuccess) {
+            Button("OK", role: .cancel) {
+                showSuccess = false
+                viewModel.registrationSuccess = false
+            }
+        } message: {
+            Text("Tu cuenta se creó correctamente.")
         }
     }
 }
@@ -246,3 +259,4 @@ func strengthMeter(score: Int) -> some View {
                 .foregroundStyle(.secondary)
         }
     }
+
