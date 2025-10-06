@@ -7,15 +7,14 @@
 
 import SwiftUI
 
-
-
-
 struct LoginView : View {
     @State private var forgotPassword: Bool = false
     @State private var email     = ""
     @State private var password  = ""
     @State private var showPass  = false
-
+    @StateObject private var loginVM = LoginModel()
+    @State private var showSuccess = false
+    @State private var showError = false
     
     var body: some View {
         NavigationStack{
@@ -42,7 +41,7 @@ struct LoginView : View {
                                     SecureField("••••••••", text: $password)
                                 }
                             }
-                            .textContentType(.newPassword)
+                            .textContentType(.password)
                             .textInputAutocapitalization(.never)
                             Button {
                                 showPass.toggle()
@@ -55,6 +54,24 @@ struct LoginView : View {
                     }
                     .padding(.leading,15)
                     .padding(.trailing, 15)
+                    
+                    Button{
+                        let loginUser = LoginRequest(
+                            email: email.trimmingCharacters(in: .whitespacesAndNewlines).lowercased(),
+                            password: password
+                        )
+                        Task {
+                            await loginVM.login(user: loginUser)
+                        }
+                    }
+                    label: {
+                        Text("Login")
+                            .fontWeight(.semibold)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                        
+                    }
                     
                     HStack(alignment: .center){
                         Button(action:{forgotPassword.toggle()}){
@@ -72,7 +89,28 @@ struct LoginView : View {
                     }
                     .padding(.horizontal)
                     .padding(.top, 4)
-                }            }
+                }
+            }
+        }
+        .onChange(of: loginVM.errorMessage) { newValue in
+            showError = newValue != nil
+        }
+        .alert("Login error", isPresented: $showError) {
+            Button("OK", role: .cancel) { showError = false }
+        } message: {
+            Text(loginVM.errorMessage ?? "Ocurrió un error")
+        }
+        .onChange(of: loginVM.isLoggedIn) { newValue in
+            if newValue {
+                showSuccess = true
+            }
+        }
+        .alert("Inicio de sesión exitoso", isPresented: $showSuccess) {
+            Button("OK", role: .cancel) {
+                showSuccess = false
+            }
+        } message: {
+            Text("Has iniciado sesión correctamente.")
         }
     }
 }
@@ -80,4 +118,3 @@ struct LoginView : View {
 #Preview {
     LoginView()
 }
-

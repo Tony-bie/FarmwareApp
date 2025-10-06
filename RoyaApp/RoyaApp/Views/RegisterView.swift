@@ -16,6 +16,8 @@ struct RegisterView : View {
     @State private var dateAdded = Calendar.current.date(byAdding: .year, value: -18, to: .now) ?? .now
     @State private var showPass  = false
     @State private var showConfirmPass = false
+    @State private var showError = false
+    @State private var showSuccess = false
     
     private var isEmailValid: Bool{
         let regex = /.+@.+\..+/
@@ -48,7 +50,8 @@ struct RegisterView : View {
         isEmailNonEmpty && isEmailValid &&
         isPasswordNonEmpty && passwordsMatch
     }
-    
+    @StateObject private var viewModel = RegisterViewModel()
+
     var body: some View {
         NavigationStack{
             ZStack{
@@ -140,7 +143,24 @@ struct RegisterView : View {
                     validityTag(isValid: passwordsMatch, text: passwordsMatch ? "Passwords match" : "Passwords don’t match")
                     Button{
                         guard isvalidEverything else {return}
-                    } label: {
+                        let formatter = DateFormatter()
+                            formatter.dateFormat = "yyyy-MM-dd"
+                        let birthdayString = formatter.string(from: dateAdded)
+
+                        let newUser = RegisterUser(
+                            first_name: firstName,
+                            last_name: lastName,
+                            email: email,
+                            password: password,
+                            confirm_password: confirm,
+                            birthday: birthdayString
+                        )
+
+                        Task {
+                            await viewModel.register(user: newUser)
+                        }
+                    }
+                    label: {
                         Text("Create account")
                             .fontWeight(.semibold)
                             .frame(maxWidth: .infinity)
@@ -149,10 +169,31 @@ struct RegisterView : View {
 
                     }
                     .disabled(!isvalidEverything)
+                    .onChange(of: viewModel.errorMessage){ _, newValue in
+                            showError = newValue != nil
+                        }
+                        .alert("Login error", isPresented: $showError) {
+                            Button("OK", role: .cancel) { showError = false }
+                        } message: {
+                            Text(viewModel.errorMessage ?? "Ocurrió un error")
+                        }
                     
                 }
             }
             
+        }
+        .onChange(of: viewModel.registrationSuccess) { _, newValue in
+            if newValue {
+                showSuccess = true
+            }
+        }
+        .alert("Registro exitoso", isPresented: $showSuccess) {
+            Button("OK", role: .cancel) {
+                showSuccess = false
+                viewModel.registrationSuccess = false
+            }
+        } message: {
+            Text("Tu cuenta se creó correctamente.")
         }
     }
 }
@@ -218,3 +259,4 @@ func strengthMeter(score: Int) -> some View {
                 .foregroundStyle(.secondary)
         }
     }
+
