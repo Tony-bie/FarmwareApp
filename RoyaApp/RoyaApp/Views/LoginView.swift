@@ -7,16 +7,13 @@
 
 import SwiftUI
 
-
-
-
 struct LoginView : View {
     @State private var forgotPassword: Bool = false
     @State private var email     = ""
     @State private var password  = ""
     @State private var showPass  = false
     @StateObject private var loginVM = LoginModel()
-    
+    @State private var showSuccess = false
     @State private var showError = false
     
     var body: some View {
@@ -44,7 +41,7 @@ struct LoginView : View {
                                     SecureField("••••••••", text: $password)
                                 }
                             }
-                            .textContentType(.newPassword)
+                            .textContentType(.password)
                             .textInputAutocapitalization(.never)
                             Button {
                                 showPass.toggle()
@@ -59,7 +56,10 @@ struct LoginView : View {
                     .padding(.trailing, 15)
                     
                     Button{
-                        let loginUser = LoginRequest(email: email.trimmingCharacters(in: .whitespacesAndNewlines).lowercased(), password: password)
+                        let loginUser = LoginRequest(
+                            email: email.trimmingCharacters(in: .whitespacesAndNewlines).lowercased(),
+                            password: password
+                        )
                         Task {
                             await loginVM.login(user: loginUser)
                         }
@@ -92,18 +92,29 @@ struct LoginView : View {
                 }
             }
         }
-        .onChange(of: loginVM.errorMessage){ _, newValue in
-                showError = newValue != nil
+        .onChange(of: loginVM.errorMessage) { newValue in
+            showError = newValue != nil
+        }
+        .alert("Login error", isPresented: $showError) {
+            Button("OK", role: .cancel) { showError = false }
+        } message: {
+            Text(loginVM.errorMessage ?? "Ocurrió un error")
+        }
+        .onChange(of: loginVM.isLoggedIn) { newValue in
+            if newValue {
+                showSuccess = true
             }
-            .alert("Login error", isPresented: $showError) {
-                Button("OK", role: .cancel) { showError = false }
-            } message: {
-                Text(loginVM.errorMessage ?? "Ocurrió un error")
+        }
+        .alert("Inicio de sesión exitoso", isPresented: $showSuccess) {
+            Button("OK", role: .cancel) {
+                showSuccess = false
             }
+        } message: {
+            Text("Has iniciado sesión correctamente.")
+        }
     }
 }
 
 #Preview {
     LoginView()
 }
-
