@@ -5,9 +5,10 @@ import SwiftUI
 struct RegisterUser: Codable {
     let first_name: String
     let last_name: String
-    let email: String
+    let username: String
+    let email: String?
+    let phonenumber: String?
     let password: String
-    let confirm_password: String
     let birthday: String
 }
 

@@ -1,12 +1,14 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from pydantic import BaseModel, EmailStr
 from datetime import date
+from typing import Optional
+import re
 import requests
 import os
 from passlib.context import CryptContext
 from passlib.exc import UnknownHashError
 
-
+# -------------------- Distintos tipos de encriptación --------------------
 pwd_context = CryptContext(
     schemes=["argon2", "bcrypt_sha256", "bcrypt"],
     default="argon2",
@@ -26,17 +28,32 @@ SUPABASE_REGISTER = "users"
 SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
 
 
+# ---------------------- Clases con sus valores ----------------------
 class User(BaseModel):
     first_name: str
     last_name: str
-    email: EmailStr
+    email: Optional[EmailStr] = None
+    phonenumber: Optional[str] = None
     password: str
-    confirm_password: str
+    username: str
     birthday: date
     
 class LoginIn(BaseModel):
-    email: EmailStr
+    identifier: str
     password: str
+    
+class UpdateUser(BaseModel):
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    email: Optional[EmailStr] = None
+    phonenumber: Optional[str] = None
+    username: Optional[str] = None
+    current_password: Optional[str] = None
+    new_password: Optional[str] = None
+    confirm_password: Optional[str] = None
+
+class DeleteIn(BaseModel):
+    current_password: str
     
 def headers():
     return{
@@ -57,23 +74,31 @@ def get_images():
         return {"error": "Error al consultar Supabase", "details": response.text}
 
     return response.json()
-
+    
+    
+# ---------------------- Api registro ----------------------
 @app.post("/register")
 def register(reg: User):
-    if reg.password != reg.confirm_password:
-        raise HTTPException(status_code=400, detail= "Password do not match")
+
     password_hash = pwd_context.hash(reg.password)
     
-    email_norm = reg.email.strip().lower()
-
+    email_norm = reg.email.strip().lower() if reg.email else None
     
+    number_norm = re.sub(r"\D", "", reg.phonenumber) if reg.phonenumber else None
+
     data = {
         "first_name": reg.first_name,
         "last_name": reg.last_name,
-        "email": email_norm,
         "password_hash": password_hash,
+        "username": reg.username,
         "birthday": str(reg.birthday)
     }
+    
+    if email_norm is not None:
+        data["email"] = email_norm
+    if number_norm is not None:
+        data["phonenumber"] = number_norm
+    
     response = requests.post(SUPABASE_URL + SUPABASE_REGISTER, headers=headers(), json=data, timeout=10)
     
     if not response.ok:
@@ -81,19 +106,27 @@ def register(reg: User):
     
     return{"message": "User registered successfully"}
     
+
+# ---------------------- Api Login ----------------------
 @app.post("/login")
 def login(log: LoginIn):
     if not SUPABASE_KEY:
         raise HTTPException(status_code=500, detail="Service role key no configurada")
 
-    email_norm = log.email.strip().lower()
-
+    ident = log.identifier.strip()
+    
+    PHONE_RE = re.compile(r"^\d{8,15}$")
+    
+    if "@" in ident:
+        where = {"email": f"eq.{ident}"}
+    elif PHONE_RE.match(ident):
+        where = {"phonenumber": f"eq.{ident}"}
+    else:
+        where = {"username": f"eq.{ident}"}
+        
     url = SUPABASE_URL + SUPABASE_REGISTER
-    params = {
-        "select": "id_user,email,password_hash",
-        "email": f"ilike.{email_norm}",
-        "limit": 1
-    }
+    params = {"select": "id_user,username,email,phonenumber,password_hash", **where, "limit": 1}
+
 
     resp = requests.get(url, headers=headers(), params=params, timeout=10)
     if not resp.ok:
@@ -128,3 +161,135 @@ def login(log: LoginIn):
 
     return {"user": pub_rows[0]} if pub_rows else {"message": "Login successful"}
 
+# ---------------------- Api config ----------------------
+@app.get("/me")
+def get_me(user_id: int = Query(..., alias = "user_id")):
+    url = SUPABASE_URL + SUPABASE_REGISTER
+    params = {
+        "select" : "id_user, first_name, last_name, email, phonenumber, username",
+        "id_user": f"eq.{user_id}",
+        "limit": 1
+    }
+    resp = requests.get(url, headers=headers(), params=params, timeout=10)
+    if not resp.ok:
+        raise HTTPException(status_code=resp.status_code, detail=resp.text)
+    rows = resp.json()
+    if not rows:
+        raise HTTPException(status_code=404, detail="User not found")
+    return rows[0]
+    
+
+# ---------------------- Api update user ----------------------
+@app.patch("/users/{user_id}")
+def update_user(user_id: int, body: UpdateUser):
+    data = body.model_dump(exclude_unset=True)
+
+    if data.get("email") is not None:
+        data["email"] = data["email"].strip().lower()
+    if data.get("phonenumber") is not None:
+        data["phonenumber"] = re.sub(r"\D", "", data["phonenumber"])
+
+    wants_pwd = all(k in data for k in ("current_password", "new_password", "confirm_password"))
+    url = SUPABASE_URL + SUPABASE_REGISTER
+
+    if wants_pwd:
+        if data["new_password"] != data["confirm_password"]:
+            raise HTTPException(status_code=400, detail="Passwords do not match")
+
+        r = requests.get(
+            url,
+            headers=headers(),
+            params={"select": "password_hash", "id_user": f"eq.{user_id}", "limit": 1},
+            timeout=10,
+        )
+        if not r.ok:
+            raise HTTPException(status_code=r.status_code, detail=r.text)
+        rows = r.json()
+        if not rows:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        stored = rows[0].get("password_hash") or ""
+        try:
+            if not pwd_context.verify(data["current_password"], stored):
+                raise HTTPException(status_code=401, detail="Current password incorrect")
+        except UnknownHashError:
+            raise HTTPException(status_code=400, detail="Invalid stored hash")
+
+        data["password_hash"] = pwd_context.hash(data["new_password"])
+        for k in ("current_password", "new_password", "confirm_password"):
+            data.pop(k, None)
+
+    data = {k: v for k, v in data.items() if v is not None}
+    if not data:
+        return {"message": "Nothing to update"}
+
+    rp = requests.patch(
+        url,
+        headers=headers(),
+        params={"id_user": f"eq.{user_id}"},
+        json=data,
+        timeout=10,
+    )
+    if not rp.ok:
+        raise HTTPException(status_code=rp.status_code, detail=rp.text)
+
+    rg = requests.get(
+        url,
+        headers=headers(),
+        params={
+            "select": "id_user,first_name,last_name,email,phonenumber,username,birthday,created_at",
+            "id_user": f"eq.{user_id}",
+            "limit": 1,
+        },
+        timeout=10,
+    )
+    if not rg.ok:
+        raise HTTPException(status_code=rg.status_code, detail=rg.text)
+
+    out = rg.json()
+    return out[0] if out else {"message": "Updated"}
+
+# ---------------------- Api delete user ----------------------
+@app.delete("/users/{user_id}")
+def delete_user(user_id: int, body: DeleteIn):
+    if not SUPABASE_KEY:
+        raise HTTPException(status_code=500, detail="Service role key no configurada")
+    url = SUPABASE_URL + SUPABASE_REGISTER
+
+            
+    req = requests.get(
+        url,
+        headers=headers(),
+        params={"select": "password_hash", "id_user": f"eq.{user_id}", "limit": 1},
+        timeout=10,
+    )
+    
+    if not req.ok:
+        raise HTTPException(status_code=req.status_code, detail=req.text)
+    rows = req.json()
+    if not rows:
+        raise HTTPException(status_code=404, detail="User not found")
+        
+    stored = rows[0].get("password_hash") or ""
+    try:
+        if not pwd_context.verify(body.current_password, stored):
+            raise HTTPException(status_code=401, detail="Current password incorrect")
+    except UnknownHashError:
+        raise HTTPException(status_code=400, detail="Invalid stored hash")
+        
+    del_headers = headers() | {"Prefer": "return=representation"}
+    d = requests.delete(
+        url,
+        headers=del_headers,
+        params={"id_user": f"eq.{user_id}"},
+        timeout=10,
+    )
+    
+    if not d.ok:
+        raise HTTPException(status_code=d.status_code, detail=d.text)
+        
+    try:
+        deleted = d.json()
+        return {"deleted": deleted}
+    except ValueError:
+        return {"message": "User deleted successfully"}

@@ -10,7 +10,8 @@ import SwiftUI
 struct RegisterView : View {
     @State private var firstName = ""
     @State private var lastName  = ""
-    @State private var email     = ""
+    @State private var username  = ""
+    @State private var emailNumber     = ""
     @State private var password  = ""
     @State private var confirm   = ""
     @State private var dateAdded = Calendar.current.date(byAdding: .year, value: -18, to: .now) ?? .now
@@ -18,10 +19,42 @@ struct RegisterView : View {
     @State private var showConfirmPass = false
     @State private var showError = false
     @State private var showSuccess = false
+    @State private var acceptTerms = false
     
-    private var isEmailValid: Bool{
-        let regex = /.+@.+\..+/
-        return email.wholeMatch(of: regex) != nil
+    private var emailRegex: Regex<Substring> { /.+@.+\..+/ }
+    private var phoneRegex: Regex<Substring> { /^\d{10}$/ }
+    
+    private enum ContactValidationState {
+        case empty
+        case valid
+        case invalidEmail
+        case invalidPhone
+    }
+    
+    private var contactValidation: (state: ContactValidationState, message: String?) {
+        let trimmed = emailNumber.trimmingCharacters(in: .whitespacesAndNewlines)
+        if trimmed.isEmpty {
+            return (.empty, nil)
+        }
+        
+        let looksLikePhone = trimmed.allSatisfy(\.isNumber)
+        let looksLikeEmail = trimmed.contains("@") || trimmed.contains(where: { $0.isLetter })
+        
+        if looksLikePhone {
+            if trimmed.wholeMatch(of: phoneRegex) != nil {
+                return (.valid, "Valid phone")
+            } else {
+                return (.invalidPhone, "Invalid phone (10 digits)")
+            }
+        } else if looksLikeEmail {
+            if trimmed.wholeMatch(of: emailRegex) != nil {
+                return (.valid, "Valid email")
+            } else {
+                return (.invalidEmail, "Invalid email")
+            }
+        } else {
+            return (.invalidEmail, "Invalid email")
+        }
     }
     
     private var passwordsMatch: Bool{
@@ -38,17 +71,20 @@ struct RegisterView : View {
         return min(score, 4)
     }
     
-    private var isEmailNonEmpty: Bool { !email.trimmingCharacters(in: .whitespaces).isEmpty }
     private var areNamesNonEmpty: Bool {
         !firstName.trimmingCharacters(in: .whitespaces).isEmpty &&
         !lastName.trimmingCharacters(in: .whitespaces).isEmpty
     }
     private var isPasswordNonEmpty: Bool { !password.isEmpty && !confirm.isEmpty }
+    private var isUsernameNonEmpty: Bool { !username.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
     
     private var isvalidEverything: Bool {
-        areNamesNonEmpty &&
-        isEmailNonEmpty && isEmailValid &&
-        isPasswordNonEmpty && passwordsMatch
+        let contactOK = contactValidation.state == .empty || contactValidation.state == .valid
+        return areNamesNonEmpty &&
+               isUsernameNonEmpty &&
+               isPasswordNonEmpty && passwordsMatch &&
+               acceptTerms &&
+               contactOK
     }
     @StateObject private var viewModel = RegisterViewModel()
 
@@ -56,128 +92,164 @@ struct RegisterView : View {
         NavigationStack{
             ZStack{
                 Color.appBg.ignoresSafeArea()
-                VStack(spacing: 16){
-                    Text("Create new account")
-                        .font(.title)
-                        .fontWeight(.bold)
+                ScrollView {
+                    VStack(spacing: 16){
+                        Text("Create new account")
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .padding(.leading,15)
+                            .padding(.trailing, 15)
+                        LabelField(systemName: "person.fill", title: "First name"){
+                            TextField("First name", text: $firstName)
+                        }
                         .padding(.leading,15)
                         .padding(.trailing, 15)
-                    LabelField(systemName: "person.fill", title: "First name"){
-                        TextField("First name", text: $firstName)
-                    }
-                    .padding(.leading,15)
-                    .padding(.trailing, 15)
-                    LabelField(systemName: "person", title: "Last name"){
-                        TextField("Last name", text: $lastName)
-                    }
-                    .padding(.leading,15)
-                    .padding(.trailing, 15)
-                    HStack {
-                        Text("Birthday")
-                            .font(.headline)
-                        DatePicker("", selection: $dateAdded, displayedComponents: .date)
-                            .datePickerStyle(.compact)
-                    }
-                    .padding(.leading,15)
-                    .padding(.trailing, 15)
-                    
-                    LabelField(systemName: "envelope.fill", title: "Email"){
-                        TextField("Email", text: $email)
-                            .textContentType(.emailAddress)
-                    }
-                    .padding(.leading,15)
-                    .padding(.trailing, 15)
-                    validityTag(isValid: isEmailValid, text: isEmailValid ? "Valid email" : "Invalid email")
-                    
-                        
-                    LabelField(systemName: "lock.fill", title: "Password"){
-                        HStack{
-                            Group{
-                                if showPass{
-                                    TextField("Password", text: $password)
-                                }
-                                else {
-                                    SecureField("••••••••", text: $password)
-                                }
-                            }
-                            .textContentType(.newPassword)
-                            .textInputAutocapitalization(.never)
-                            Button {
-                                showPass.toggle()
-                            } label: {
-                                Image(systemName: showPass ? "eye.slash" : "eye")
-                                    .foregroundStyle(.secondary)
-                            }
-                            .accessibilityLabel(showPass ? "Hide password" : "Show password")
+                        LabelField(systemName: "person", title: "Last name"){
+                            TextField("Last name", text: $lastName)
                         }
-                    }
-                    .padding(.leading,15)
-                    .padding(.trailing, 15)
-                    strengthMeter(score: passwordStrength)
-                    .padding(.leading,15)
-                    .padding(.trailing, 15)
-                    LabelField(systemName: "lock.rotation", title: "Repeat password"){
-                        HStack{
-                            Group{
-                                if showConfirmPass{
-                                    TextField("Repeat password", text: $confirm)
-                                }
-                                else {
-                                    SecureField("•••••••••••••", text: $confirm)
-                                }
+                        .padding(.leading,15)
+                        .padding(.trailing, 15)
+                        
+                        LabelField(systemName: "person.crop.circle", title: "Username"){
+                            TextField("Username", text: $username)
+                                .textInputAutocapitalization(.never)
+                                .autocorrectionDisabled(true)
+                        }
+                        .padding(.leading,15)
+                        .padding(.trailing, 15)
+                        
+                        HStack {
+                            Text("Birthday")
+                                .font(.headline)
+                            DatePicker("", selection: $dateAdded, displayedComponents: .date)
+                                .datePickerStyle(.compact)
+                        }
+                        .padding(.leading,15)
+                        .padding(.trailing, 15)
+                        
+                        LabelField(systemName: "envelope.fill", title: "Email or phone"){
+                            TextField("Email or 10-digit phone", text: $emailNumber)
+                                .textContentType(.emailAddress)
+                                .keyboardType(.emailAddress)
+                        }
+                        .padding(.leading,15)
+                        .padding(.trailing, 15)
+                        
+                        Group {
+                            switch contactValidation.state {
+                            case .empty:
+                                EmptyView()
+                            case .valid:
+                                validityTag(isValid: true, text: "Valid email/phone")
+                            case .invalidEmail:
+                                validityTag(isValid: false, text: "Invalid email")
+                            case .invalidPhone:
+                                validityTag(isValid: false, text: "Invalid phone (10 digits)")
                             }
-                            .textContentType(.newPassword)
-                            .textInputAutocapitalization(.never)
-                            Button {
-                                showConfirmPass.toggle()
-                            } label: {
-                                Image(systemName: showConfirmPass ? "eye.slash" : "eye")
-                                    .foregroundStyle(.secondary)
-                            }
-                            .accessibilityLabel(showConfirmPass ? "Hide password" : "Show password")
                         }
                         
-                    }
-                    .padding(.leading,15)
-                    .padding(.trailing, 15)
-                    validityTag(isValid: passwordsMatch, text: passwordsMatch ? "Passwords match" : "Passwords don’t match")
-                    Button{
-                        guard isvalidEverything else {return}
-                        let formatter = DateFormatter()
-                            formatter.dateFormat = "yyyy-MM-dd"
-                        let birthdayString = formatter.string(from: dateAdded)
-
-                        let newUser = RegisterUser(
-                            first_name: firstName,
-                            last_name: lastName,
-                            email: email,
-                            password: password,
-                            confirm_password: confirm,
-                            birthday: birthdayString
-                        )
-
-                        Task {
-                            await viewModel.register(user: newUser)
+                        LabelField(systemName: "lock.fill", title: "Password"){
+                            HStack{
+                                Group{
+                                    if showPass{
+                                        TextField("Password", text: $password)
+                                    }
+                                    else {
+                                        SecureField("••••••••", text: $password)
+                                    }
+                                }
+                                .textContentType(.newPassword)
+                                .textInputAutocapitalization(.never)
+                                Button {
+                                    showPass.toggle()
+                                } label: {
+                                    Image(systemName: showPass ? "eye.slash" : "eye")
+                                        .foregroundStyle(.secondary)
+                                }
+                                .accessibilityLabel(showPass ? "Hide password" : "Show password")
+                            }
                         }
-                    }
-                    label: {
-                        Text("Create account")
-                            .fontWeight(.semibold)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                        .padding(.leading,15)
+                        .padding(.trailing, 15)
+                        strengthMeter(score: passwordStrength)
+                        .padding(.leading,15)
+                        .padding(.trailing, 15)
+                        LabelField(systemName: "lock.rotation", title: "Repeat password"){
+                            HStack{
+                                Group{
+                                    if showConfirmPass{
+                                        TextField("Repeat password", text: $confirm)
+                                    }
+                                    else {
+                                        SecureField("•••••••••••••", text: $confirm)
+                                    }
+                                }
+                                .textContentType(.newPassword)
+                                .textInputAutocapitalization(.never)
+                                Button {
+                                    showConfirmPass.toggle()
+                                } label: {
+                                    Image(systemName: showConfirmPass ? "eye.slash" : "eye")
+                                        .foregroundStyle(.secondary)
+                                }
+                                .accessibilityLabel(showConfirmPass ? "Hide password" : "Show password")
+                            }
+                            
+                        }
+                        .padding(.leading,15)
+                        .padding(.trailing, 15)
+                        validityTag(isValid: passwordsMatch, text: passwordsMatch ? "Passwords match" : "Passwords don’t match")
+                        
+                        Toggle(isOn: $acceptTerms) {
+                            Text("Acepto los términos y condiciones")
+                                .font(.subheadline)
+                        }
+                        .padding(.horizontal, 15)
+                        
+                        Button{
+                            guard isvalidEverything else {return}
+                            let formatter = DateFormatter()
+                                formatter.dateFormat = "yyyy-MM-dd"
+                            let birthdayString = formatter.string(from: dateAdded)
+                            let trimmed = emailNumber.trimmingCharacters(in: .whitespacesAndNewlines)
+                            
+                            let emailToSend: String? = trimmed.contains("@") ? trimmed.lowercased() : nil
+                            let phoneToSend: String? = trimmed.allSatisfy(\.isNumber) ? trimmed : nil
+                            
+                            let newUser = RegisterUser(
+                                first_name: firstName,
+                                last_name: lastName,
+                                username: username,
+                                email: emailToSend,
+                                phonenumber: phoneToSend,
+                                password: password,
+                                birthday: birthdayString
+                            )
 
+                            Task {
+                                await viewModel.register(user: newUser)
+                            }
+                        }
+                        label: {
+                            Text("Create account")
+                                .fontWeight(.semibold)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                         }
+                        .disabled(!isvalidEverything)
+                        .onChange(of: viewModel.errorMessage){ _, newValue in
+                                showError = newValue != nil
+                            }
+                            .alert("Login error", isPresented: $showError) {
+                                Button("OK", role: .cancel) { showError = false }
+                            } message: {
+                                Text(viewModel.errorMessage ?? "Ocurrió un error")
+                            }
+                        
+                        Spacer(minLength: 8)
                     }
-                    .disabled(!isvalidEverything)
-                    .onChange(of: viewModel.errorMessage){ _, newValue in
-                            showError = newValue != nil
-                        }
-                        .alert("Login error", isPresented: $showError) {
-                            Button("OK", role: .cancel) { showError = false }
-                        } message: {
-                            Text(viewModel.errorMessage ?? "Ocurrió un error")
-                        }
-                    
+                    .padding(.vertical, 16)
                 }
             }
             
