@@ -7,32 +7,19 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		FB22F12B2E735EDD002F233B /* RoyaApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RoyaApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FB22F1992E7CB3FC002F233B /* taller.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = taller.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		FB22F18F2E7362C9002F233B /* Exceptions for "RoyaApp" folder in "RoyaApp" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = FB22F12A2E735EDD002F233B /* RoyaApp */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		FB22F12D2E735EDD002F233B /* RoyaApp */ = {
+		FB22F19B2E7CB3FC002F233B /* taller */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				FB22F18F2E7362C9002F233B /* Exceptions for "RoyaApp" folder in "RoyaApp" target */,
-			);
-			path = RoyaApp;
+			path = taller;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		FB22F1282E735EDD002F233B /* Frameworks */ = {
+		FB22F1962E7CB3FC002F233B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -42,18 +29,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		FB22F1222E735EDD002F233B = {
+		FB22F1902E7CB3FC002F233B = {
 			isa = PBXGroup;
 			children = (
-				FB22F12D2E735EDD002F233B /* RoyaApp */,
-				FB22F12C2E735EDD002F233B /* Products */,
+				FB22F19B2E7CB3FC002F233B /* taller */,
+				FB22F19A2E7CB3FC002F233B /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		FB22F12C2E735EDD002F233B /* Products */ = {
+		FB22F19A2E7CB3FC002F233B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FB22F12B2E735EDD002F233B /* RoyaApp.app */,
+				FB22F1992E7CB3FC002F233B /* taller.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -61,64 +48,64 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		FB22F12A2E735EDD002F233B /* RoyaApp */ = {
+		FB22F1982E7CB3FC002F233B /* taller */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = FB22F1362E735EE1002F233B /* Build configuration list for PBXNativeTarget "RoyaApp" */;
+			buildConfigurationList = FB22F1A42E7CB3FF002F233B /* Build configuration list for PBXNativeTarget "taller" */;
 			buildPhases = (
-				FB22F1272E735EDD002F233B /* Sources */,
-				FB22F1282E735EDD002F233B /* Frameworks */,
-				FB22F1292E735EDD002F233B /* Resources */,
+				FB22F1952E7CB3FC002F233B /* Sources */,
+				FB22F1962E7CB3FC002F233B /* Frameworks */,
+				FB22F1972E7CB3FC002F233B /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				FB22F12D2E735EDD002F233B /* RoyaApp */,
+				FB22F19B2E7CB3FC002F233B /* taller */,
 			);
-			name = RoyaApp;
+			name = taller;
 			packageProductDependencies = (
 			);
-			productName = RoyaApp;
-			productReference = FB22F12B2E735EDD002F233B /* RoyaApp.app */;
+			productName = taller;
+			productReference = FB22F1992E7CB3FC002F233B /* taller.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		FB22F1232E735EDD002F233B /* Project object */ = {
+		FB22F1912E7CB3FC002F233B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 1640;
 				TargetAttributes = {
-					FB22F12A2E735EDD002F233B = {
+					FB22F1982E7CB3FC002F233B = {
 						CreatedOnToolsVersion = 16.4;
 					};
 				};
 			};
-			buildConfigurationList = FB22F1262E735EDD002F233B /* Build configuration list for PBXProject "RoyaApp" */;
+			buildConfigurationList = FB22F1942E7CB3FC002F233B /* Build configuration list for PBXProject "taller" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = FB22F1222E735EDD002F233B;
+			mainGroup = FB22F1902E7CB3FC002F233B;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = FB22F12C2E735EDD002F233B /* Products */;
+			productRefGroup = FB22F19A2E7CB3FC002F233B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				FB22F12A2E735EDD002F233B /* RoyaApp */,
+				FB22F1982E7CB3FC002F233B /* taller */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		FB22F1292E735EDD002F233B /* Resources */ = {
+		FB22F1972E7CB3FC002F233B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -128,7 +115,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		FB22F1272E735EDD002F233B /* Sources */ = {
+		FB22F1952E7CB3FC002F233B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -138,7 +125,7 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		FB22F1342E735EE1002F233B /* Debug */ = {
+		FB22F1A22E7CB3FF002F233B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -190,7 +177,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -201,7 +188,7 @@
 			};
 			name = Debug;
 		};
-		FB22F1352E735EE1002F233B /* Release */ = {
+		FB22F1A32E7CB3FF002F233B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -247,7 +234,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -257,70 +244,54 @@
 			};
 			name = Release;
 		};
-		FB22F1372E735EE1002F233B /* Debug */ = {
+		FB22F1A52E7CB3FF002F233B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 92CS37DX94;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = RoyaApp/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "<string>Necesitamos acceder a tu cámara para tomar fotos</string>";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Necesitamos acceder a tus fotos para seleccionarlas";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.itesm.RoyaApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.itesm.taller;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		FB22F1382E735EE1002F233B /* Release */ = {
+		FB22F1A62E7CB3FF002F233B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 92CS37DX94;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = RoyaApp/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "<string>Necesitamos acceder a tu cámara para tomar fotos</string>";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Necesitamos acceder a tus fotos para seleccionarlas";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.itesm.RoyaApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.itesm.taller;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -330,25 +301,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		FB22F1262E735EDD002F233B /* Build configuration list for PBXProject "RoyaApp" */ = {
+		FB22F1942E7CB3FC002F233B /* Build configuration list for PBXProject "taller" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				FB22F1342E735EE1002F233B /* Debug */,
-				FB22F1352E735EE1002F233B /* Release */,
+				FB22F1A22E7CB3FF002F233B /* Debug */,
+				FB22F1A32E7CB3FF002F233B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		FB22F1362E735EE1002F233B /* Build configuration list for PBXNativeTarget "RoyaApp" */ = {
+		FB22F1A42E7CB3FF002F233B /* Build configuration list for PBXNativeTarget "taller" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				FB22F1372E735EE1002F233B /* Debug */,
-				FB22F1382E735EE1002F233B /* Release */,
+				FB22F1A52E7CB3FF002F233B /* Debug */,
+				FB22F1A62E7CB3FF002F233B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = FB22F1232E735EDD002F233B /* Project object */;
+	rootObject = FB22F1912E7CB3FC002F233B /* Project object */;
 }
