@@ -8,26 +8,45 @@
 import SwiftUI
 
 struct LoginView : View {
-    @State private var forgotPassword: Bool = false
-    @State private var email     = ""
+    @State private var identifier = ""
     @State private var password  = ""
     @State private var showPass  = false
     @StateObject private var loginVM = LoginModel()
     @State private var showSuccess = false
     @State private var showError = false
+
     
+    private var isPhone: Bool {
+        let trimmed = identifier.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.count == 10 && trimmed.allSatisfy(\.isNumber)
+    }
+    private var isEmail: Bool {
+        let trimmed = identifier.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.contains("@") && trimmed.contains(".")
+    }
+
     var body: some View {
         NavigationStack{
             ZStack{
                 Color.appBg.ignoresSafeArea()
                 VStack(alignment: .leading){
+                    NavigationLink(isActive: $loginVM.isLoggedIn) {
+                        ConfigView()
+                    } label: {
+                        EmptyView()
+                    }
+                    .hidden()
+                    
                     Text("Login session")
                         .font(.title)
                         .fontWeight(.bold)
                         .padding()
-                    LabelField(systemName: "envelope.fill", title: "Email"){
-                        TextField("Email", text: $email)
-                            .textContentType(.emailAddress)
+                    LabelField(systemName: "person.crop.circle", title: "Username / Email / Phone"){
+                        TextField("Username / Email / Phone", text: $identifier)
+                            .textInputAutocapitalization(.never)
+                            .autocorrectionDisabled(true)
+                            .textContentType(.username)
+                            .keyboardType(.default)
                     }
                     .padding(.leading,15)
                     .padding(.trailing, 15)
@@ -56,8 +75,11 @@ struct LoginView : View {
                     .padding(.trailing, 15)
                     
                     Button{
+                        let trimmed = identifier.trimmingCharacters(in: .whitespacesAndNewlines)
+                        let normalized = trimmed.contains("@") ? trimmed.lowercased() : trimmed
+                        
                         let loginUser = LoginRequest(
-                            email: email.trimmingCharacters(in: .whitespacesAndNewlines).lowercased(),
+                            identifier: normalized,
                             password: password
                         )
                         Task {
@@ -74,11 +96,6 @@ struct LoginView : View {
                     }
                     
                     HStack(alignment: .center){
-                        Button(action:{forgotPassword.toggle()}){
-                            Text("Did you forget your password?")
-                                .font(.footnote)
-                                .underline()
-                        }
                         Spacer()
                         NavigationLink{
                             RegisterView()
@@ -100,21 +117,11 @@ struct LoginView : View {
         } message: {
             Text(loginVM.errorMessage ?? "Ocurrió un error")
         }
-        .onChange(of: loginVM.isLoggedIn) { newValue in
-            if newValue {
-                showSuccess = true
-            }
-        }
-        .alert("Inicio de sesión exitoso", isPresented: $showSuccess) {
-            Button("OK", role: .cancel) {
-                showSuccess = false
-            }
-        } message: {
-            Text("Has iniciado sesión correctamente.")
-        }
+        
     }
 }
 
 #Preview {
     LoginView()
 }
+
