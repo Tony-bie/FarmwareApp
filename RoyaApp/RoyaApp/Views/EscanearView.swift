@@ -12,15 +12,16 @@ struct EscanearView: View {
     @StateObject private var camera = CamaraManager()
     @State private var showImagePicker = false
     @State private var navigateToResults = false
+    // Etapa por defecto; ajusta según tu flujo (por ejemplo: "siembra", "floración", etc.)
+    @State private var etapa: String = "cosecha"
     
     var body: some View {
         NavigationStack {
-            
             ZStack {
                 Color(red: 0.89, green: 0.93, blue: 0.88)
                     .ignoresSafeArea()
+                
                 VStack {
-                    
                     Text("Escanear Cosecha")
                         .font(.title)
                         .bold()
@@ -38,9 +39,20 @@ struct EscanearView: View {
                         }
                     }
                     .frame(width: 300, height: 400)
-                    .onChange(of: camera.capturedImage) { newImage in
-                        if newImage != nil {
-                            navigateToResults = true
+                    .onChange(of: camera.capturedImage) { _, newImage in
+                        if let image = newImage {
+                            Task {
+                                do {
+                                    let url = try await ImageUploader.uploadImage(image, etapa: etapa)
+                                    print("✅ Imagen subida con URL:", url)
+                                    // Aquí puedes pasar esa URL a ResultadosView si quieres
+                                    // o guardarla en Supabase (tabla 'photos')
+                                    
+                                    navigateToResults = true
+                                } catch {
+                                    print("❌ Error subiendo imagen:", error)
+                                }
+                            }
                         }
                     }
                     
@@ -71,30 +83,11 @@ struct EscanearView: View {
                         }
                     }
                     .padding()
-                    
-                    // Navegación segura
-                    NavigationLink(
-                        isActive: $navigateToResults,
-                        destination: {
-                            Group {
-                                if let image = camera.capturedImage {
-                                    ResultadosView(image: image)
-                                } else {
-                                    EmptyView()
-                                }
-                            }
-                        },
-                        label: {
-                            EmptyView()
-                        }
-                    )
-                    
-                    .onAppear {
-                        camera.capturedImage = nil
-                        navigateToResults = false
-                    }
                 }
-                
+                .onAppear {
+                    camera.capturedImage = nil
+                    navigateToResults = false
+                }
                 .sheet(isPresented: $showImagePicker, onDismiss: {
                     if camera.capturedImage != nil {
                         navigateToResults = true
@@ -104,16 +97,23 @@ struct EscanearView: View {
                                 sourceType: .photoLibrary)
                 }
             }
+            .navigationDestination(isPresented: $navigateToResults) {
+                Group {
+                    if let image = camera.capturedImage {
+                        ResultadosView(image: image /* , url: uploadedURL */)
+                    } else {
+                        EmptyView()
+                    }
+                }
             }
         }
     }
-    
-    
-    // Preview correcto
-    struct EscanearView_Previews: PreviewProvider {
-        static var previews: some View {
-            EscanearView()
-        }
+}
+
+
+// Preview correcto
+struct EscanearView_Previews: PreviewProvider {
+    static var previews: some View {
+        EscanearView()
     }
-
-
+}
