@@ -7,16 +7,17 @@
 
 import Foundation
 
-class Photo {
+struct Photo: Codable, Identifiable {
     var id = UUID()
-    var etapa : String
-    var img : String
-    var date : Date?
-    var comentario : String?
+    var etapa: String
+    var img_url: String
+    var date: Date?
+    var comentario: String?
     
-    
-    init(etapa: String, img: String) {
+    init(etapa: String, img_url: String, date: Date? = nil, comentario: String? = nil) {
         self.etapa = etapa
-        self.img = img
+        self.img_url = img_url
+        self.date = date
+        self.comentario = comentario
     }
 }
