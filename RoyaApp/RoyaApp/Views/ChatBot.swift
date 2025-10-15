@@ -11,6 +11,7 @@ import SwiftUI
 struct ChatView: View {
     @StateObject private var viewModel = ChatViewModel()
     @State private var prompt: String = ""
+    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         NavigationStack {
@@ -58,6 +59,17 @@ struct ChatView: View {
             .navigationTitle("Chat AI")
             .background(Color(.secondarySystemBackground))
             .ignoresSafeArea(.keyboard, edges: .bottom)
+            .toolbar {
+                // Botón de cerrar
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: {
+                        dismiss()
+                    }) {
+                        Image(systemName: "xmark") // Icono de cerrar
+                            .foregroundColor(.primary)
+                    }
+                }
+            }
         }
     }
 

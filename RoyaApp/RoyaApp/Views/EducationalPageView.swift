@@ -126,7 +126,12 @@ struct EducationalView: View {
                         .padding(.vertical, 6)
                         .frame(minHeight: 44)
                     }
+                    .fullScreenCover(isPresented: $AIChat) {
+                            ChatView()
+                        }
+                    
                 }
+                
             }
         }
         .navigationViewStyle(StackNavigationViewStyle())
