@@ -24,7 +24,7 @@ struct MainView: View {
                 case .historial:
                     HistoryView()
                 case .perfil:
-                    RoyalFile()
+                    EducationalView()
                 case .datos:
                     DetalleLote()
                 }
