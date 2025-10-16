@@ -9,11 +9,8 @@ import SwiftUI
 import UIKit
 
 
-struct RoyalFileApp: App {
-    var body: some Scene { WindowGroup { RoyalFile() } }
-}
-
-struct RoyalFile: View {
+struct EducationalView: View {
+    @State private var AIChat: Bool = false
     private let bg = Color(red: 0.93, green: 0.96, blue: 0.91)
 
     private let pQueEs1 =
@@ -31,7 +28,6 @@ struct RoyalFile: View {
         ("Agroforestería","Integrar árboles nativos para aumentar biodiversidad, reducir la erosión y fortalecer la resiliencia del cafetal.")
     ]
 
-   
     private let notasFinales: [String] = [
         "Los máximos de incidencia y severidad de la enfermedad coinciden con los picos de cosecha.",
         "Y la disminución en la producción de grano está directamente relacionada con el porcentaje de defoliación de las plantas.",
@@ -77,12 +73,10 @@ struct RoyalFile: View {
                             .foregroundStyle(.secondary)
                             .padding(.horizontal, 20)
 
-                        
                         SectionCard(title: "") {
                             escalaImage
                         }
 
-                        
                         SectionCard(title: "") {
                             VStack(alignment: .leading, spacing: 10) {
                                 ForEach(notasFinales, id: \.self) { linea in
@@ -108,14 +102,41 @@ struct RoyalFile: View {
                 .background(Color.white)
                 .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                 .shadow(radius: 5)
+                
+                // Navegación oculta a ChatView
+                NavigationLink(destination: ChatView(), isActive: $AIChat) {
+                    EmptyView()
+                }
+                .hidden()
             }
-            .toolbar(.hidden, for: .navigationBar)
             .background(bg.ignoresSafeArea())
+            .navigationTitle("Roya del Café")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        AIChat = true
+                    }) {
+                        VStack {
+                            Image(systemName: "atom")
+                            Text("Pregúntale a IA")
+                                .font(.caption2)
+                                .minimumScaleFactor(0.8)
+                        }
+                        .padding(.vertical, 6)
+                        .frame(minHeight: 44)
+                    }
+                    .fullScreenCover(isPresented: $AIChat) {
+                            ChatView()
+                        }
+                    
+                }
+                
+            }
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }
 
-   
     private var escalaImage: some View {
         Group {
             if let ui = UIImage(named: "EscalaRoya") {
@@ -176,7 +197,7 @@ private struct NumberedRow: View {
     }
 }
 
-#Preview { RoyalFile() }
 
-
-
+#Preview {
+    EducationalView()
+}
