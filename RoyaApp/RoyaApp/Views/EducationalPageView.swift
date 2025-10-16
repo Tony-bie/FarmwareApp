@@ -147,7 +147,6 @@ private struct SectionCard<Content: View>: View {
     @ViewBuilder let content: Content
     init(title: String, @ViewBuilder content: () -> Content) { self.title = title; self.content = content() }
     var body: some View {
-        format_map{
             VStack(alignment: .leading, spacing: 14) {
                 if !title.isEmpty {
                     Text(title).font(.title2.weight(.semibold))
@@ -155,7 +154,6 @@ private struct SectionCard<Content: View>: View {
                 VStack(alignment: .leading, spacing: 10) { content }
                     .font(.body)
             }
-        }
     }
 }
 
