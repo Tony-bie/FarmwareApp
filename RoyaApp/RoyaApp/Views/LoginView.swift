@@ -31,18 +31,18 @@ struct LoginView : View {
                 Color.appBg.ignoresSafeArea()
                 VStack(alignment: .leading){
                     NavigationLink(isActive: $loginVM.isLoggedIn) {
-                        ConfigView()
+                        MainView()
                     } label: {
                         EmptyView()
                     }
                     .hidden()
                     
-                    Text("Login session")
+                    Text("Iniciar sesión")
                         .font(.title)
                         .fontWeight(.bold)
                         .padding()
-                    LabelField(systemName: "person.crop.circle", title: "Username / Email / Phone"){
-                        TextField("Username / Email / Phone", text: $identifier)
+                    LabelField(systemName: "person.crop.circle", title: "Nombre de usuario / Email / número telefonico"){
+                        TextField("Nombre de usuario / Email / número telefonico", text: $identifier)
                             .textInputAutocapitalization(.never)
                             .autocorrectionDisabled(true)
                             .textContentType(.username)
@@ -50,11 +50,11 @@ struct LoginView : View {
                     }
                     .padding(.leading,15)
                     .padding(.trailing, 15)
-                    LabelField(systemName: "lock.fill", title: "Password"){
+                    LabelField(systemName: "lock.fill", title: "Contraseña"){
                         HStack{
                             Group{
                                 if showPass{
-                                    TextField("Password", text: $password)
+                                    TextField("Contraseña", text: $password)
                                 }
                                 else {
                                     SecureField("••••••••", text: $password)
@@ -87,25 +87,27 @@ struct LoginView : View {
                         }
                     }
                     label: {
-                        Text("Login")
+                        Text("Iniciar sesión")
                             .fontWeight(.semibold)
                             .frame(maxWidth: .infinity)
                             .padding()
                             .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                         
                     }
-                    
-                    HStack(alignment: .center){
-                        Spacer()
+                    Divider()
+                    HStack{
+                        Text("¿No tienes cuenta?")
+                            .frame(maxWidth: .infinity)
                         NavigationLink{
                             RegisterView()
                         } label: {
-                            Text("Sign up")
-                                .font(.footnote)
+                            Text("Crea una aquí")
+                                .frame(maxWidth: .infinity)
                         }
-                    }
                     .padding(.horizontal)
                     .padding(.top, 4)
+                    }
+                        
                 }
             }
         }

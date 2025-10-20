@@ -42,18 +42,18 @@ struct RegisterView : View {
         
         if looksLikePhone {
             if trimmed.wholeMatch(of: phoneRegex) != nil {
-                return (.valid, "Valid phone")
+                return (.valid, "Número telefónico válido")
             } else {
-                return (.invalidPhone, "Invalid phone (10 digits)")
+                return (.invalidPhone, "Número telefónico inválido (10 números)")
             }
         } else if looksLikeEmail {
             if trimmed.wholeMatch(of: emailRegex) != nil {
                 return (.valid, "Valid email")
             } else {
-                return (.invalidEmail, "Invalid email")
+                return (.invalidEmail, "Correo válido")
             }
         } else {
-            return (.invalidEmail, "Invalid email")
+            return (.invalidEmail, "Correo inválido")
         }
     }
     
@@ -94,24 +94,24 @@ struct RegisterView : View {
                 Color.appBg.ignoresSafeArea()
                 ScrollView {
                     VStack(spacing: 16){
-                        Text("Create new account")
+                        Text("Crear nueva cuenta")
                             .font(.title)
                             .fontWeight(.bold)
                             .padding(.leading,15)
                             .padding(.trailing, 15)
-                        LabelField(systemName: "person.fill", title: "First name"){
-                            TextField("First name", text: $firstName)
+                        LabelField(systemName: "person.fill", title: "Nombre(s)"){
+                            TextField("Nombre(s)", text: $firstName)
                         }
                         .padding(.leading,15)
                         .padding(.trailing, 15)
-                        LabelField(systemName: "person", title: "Last name"){
-                            TextField("Last name", text: $lastName)
+                        LabelField(systemName: "person", title: "Apellidos"){
+                            TextField("Apellidos", text: $lastName)
                         }
                         .padding(.leading,15)
                         .padding(.trailing, 15)
                         
-                        LabelField(systemName: "person.crop.circle", title: "Username"){
-                            TextField("Username", text: $username)
+                        LabelField(systemName: "person.crop.circle", title: "Nombre de usuario"){
+                            TextField("Nombre de usuario", text: $username)
                                 .textInputAutocapitalization(.never)
                                 .autocorrectionDisabled(true)
                         }
@@ -119,7 +119,7 @@ struct RegisterView : View {
                         .padding(.trailing, 15)
                         
                         HStack {
-                            Text("Birthday")
+                            Text("Fecha de nacimiento")
                                 .font(.headline)
                             DatePicker("", selection: $dateAdded, displayedComponents: .date)
                                 .datePickerStyle(.compact)
@@ -127,8 +127,8 @@ struct RegisterView : View {
                         .padding(.leading,15)
                         .padding(.trailing, 15)
                         
-                        LabelField(systemName: "envelope.fill", title: "Email or phone"){
-                            TextField("Email or 10-digit phone", text: $emailNumber)
+                        LabelField(systemName: "envelope.fill", title: "Correo o número telefónico"){
+                            TextField("Correo electrónico o número de teléfono", text: $emailNumber)
                                 .textContentType(.emailAddress)
                                 .keyboardType(.emailAddress)
                         }
@@ -142,17 +142,17 @@ struct RegisterView : View {
                             case .valid:
                                 validityTag(isValid: true, text: "Valid email/phone")
                             case .invalidEmail:
-                                validityTag(isValid: false, text: "Invalid email")
+                                validityTag(isValid: false, text: "Correo inválido")
                             case .invalidPhone:
-                                validityTag(isValid: false, text: "Invalid phone (10 digits)")
+                                validityTag(isValid: false, text: "Número telefónico valido")
                             }
                         }
                         
-                        LabelField(systemName: "lock.fill", title: "Password"){
+                        LabelField(systemName: "lock.fill", title: "Contraseña"){
                             HStack{
                                 Group{
                                     if showPass{
-                                        TextField("Password", text: $password)
+                                        TextField("Contraseña", text: $password)
                                     }
                                     else {
                                         SecureField("••••••••", text: $password)
@@ -174,11 +174,11 @@ struct RegisterView : View {
                         strengthMeter(score: passwordStrength)
                         .padding(.leading,15)
                         .padding(.trailing, 15)
-                        LabelField(systemName: "lock.rotation", title: "Repeat password"){
+                        LabelField(systemName: "lock.rotation", title: "Repetir contraseña"){
                             HStack{
                                 Group{
                                     if showConfirmPass{
-                                        TextField("Repeat password", text: $confirm)
+                                        TextField("Repetir contraseña", text: $confirm)
                                     }
                                     else {
                                         SecureField("•••••••••••••", text: $confirm)
@@ -198,7 +198,7 @@ struct RegisterView : View {
                         }
                         .padding(.leading,15)
                         .padding(.trailing, 15)
-                        validityTag(isValid: passwordsMatch, text: passwordsMatch ? "Passwords match" : "Passwords don’t match")
+                        validityTag(isValid: passwordsMatch, text: passwordsMatch ? "Contraseña verificada" : "Contraseña no verificada")
                         
                         Toggle(isOn: $acceptTerms) {
                             Text("Acepto los términos y condiciones")
@@ -231,7 +231,7 @@ struct RegisterView : View {
                             }
                         }
                         label: {
-                            Text("Create account")
+                            Text("Crear cuenta")
                                 .fontWeight(.semibold)
                                 .frame(maxWidth: .infinity)
                                 .padding()
@@ -241,7 +241,7 @@ struct RegisterView : View {
                         .onChange(of: viewModel.errorMessage){ _, newValue in
                                 showError = newValue != nil
                             }
-                            .alert("Login error", isPresented: $showError) {
+                            .alert("Error en la creación de la cuenta", isPresented: $showError) {
                                 Button("OK", role: .cancel) { showError = false }
                             } message: {
                                 Text(viewModel.errorMessage ?? "Ocurrió un error")
@@ -313,7 +313,7 @@ func validityTag(isValid: Bool, text: String) -> some View {
    }
 func strengthMeter(score: Int) -> some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text("Password strength")
+            Text("Contraseña fuerte")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
             HStack(spacing: 6) {
@@ -324,9 +324,9 @@ func strengthMeter(score: Int) -> some View {
                         .foregroundStyle(i < score ? .green : .gray.opacity(0.3))
                 }
             }
-            .accessibilityLabel("Password strength \(score) of 4")
+            .accessibilityLabel("Puntuación de seguridad: \(score) de 4")
             .accessibilityHidden(false)
-            Text("Use 8+ chars with upper, lower, numbers, and symbols.")
+            Text("Usa 8 o más letras, mayúsculas, minúsculas, simbolos y números")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
