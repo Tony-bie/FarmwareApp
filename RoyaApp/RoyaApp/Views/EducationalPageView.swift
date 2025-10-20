@@ -168,17 +168,13 @@ private struct SectionCard<Content: View>: View {
     @ViewBuilder let content: Content
     init(title: String, @ViewBuilder content: () -> Content) { self.title = title; self.content = content() }
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            if !title.isEmpty {
-                Text(title).font(.title2.weight(.semibold))
+            VStack(alignment: .leading, spacing: 14) {
+                if !title.isEmpty {
+                    Text(title).font(.title2.weight(.semibold))
+                }
+                VStack(alignment: .leading, spacing: 10) { content }
+                    .font(.body)
             }
-            VStack(alignment: .leading, spacing: 10) { content }
-                .font(.body)
-        }
-        .padding(.horizontal, 20)
-        .padding(.top, 6)
-        .background(Color.white.opacity(0.7))
-        .cornerRadius(12)
     }
 }
 
