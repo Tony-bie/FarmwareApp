@@ -11,6 +11,8 @@ import SwiftUI
 struct ChatView: View {
     @StateObject private var viewModel = ChatViewModel()
     @State private var prompt: String = ""
+    @State private var showError: Bool = false
+    @State private var errorMessage: String = ""
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -20,6 +22,10 @@ struct ChatView: View {
                 ScrollViewReader { proxy in
                     ScrollView {
                         VStack(alignment: .leading, spacing: 10) {
+                            if viewModel.messages.isEmpty {
+                                welcomeMessage
+                            }
+                            
                             ForEach(viewModel.messages, id: \.self) { msg in
                                 MessageRow(message: msg)
                             }
@@ -60,21 +66,45 @@ struct ChatView: View {
             .background(Color(.secondarySystemBackground))
             .ignoresSafeArea(.keyboard, edges: .bottom)
             .toolbar {
-                // Botón de cerrar
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: {
                         dismiss()
                     }) {
-                        Image(systemName: "xmark") // Icono de cerrar
+                        Image(systemName: "xmark")
                             .foregroundColor(.primary)
                     }
                 }
             }
+            .alert("Error", isPresented: $showError) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(errorMessage)
+            }
         }
+    }
+    
+    private var welcomeMessage: some View {
+        VStack(spacing: 16) {
+            Image(systemName: "atom")
+                .font(.system(size: 60))
+                .foregroundColor(.indigo.opacity(0.7))
+            
+            Text("Chat con IA")
+                .font(.title2.bold())
+            
+            Text("Pregunta cualquier cosa sobre plantaciones de café, la roya y cómo cuidar tus cultivos.")
+                .font(.body)
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.top, 60)
     }
 
     private func sendMessage() {
-        // Agregamos el mensaje del usuario a la UI
+        guard !prompt.isEmpty else { return }
+        
         let userMessage = "Tú: \(prompt)"
         viewModel.messages.append(userMessage)
         let messageToSend = prompt
@@ -82,8 +112,14 @@ struct ChatView: View {
 
         Task {
             viewModel.isResponding = true
-            // Enviamos solo el mensaje limpio al modelo
             let aiResponse = await viewModel.processMessage(messageToSend)
+            
+            // Verificar si hubo error
+            if aiResponse.starts(with: "Perdón") || aiResponse.starts(with: "Error") {
+                errorMessage = "Hubo un problema al conectar con el servicio de IA. Por favor, verifica que Apple Intelligence esté habilitado en Ajustes del sistema."
+                showError = true
+            }
+            
             viewModel.messages.append("AI: \(aiResponse)")
             viewModel.isResponding = false
         }
@@ -105,7 +141,9 @@ struct MessageRow: View {
 }
 
 #Preview {
-    ChatView()
+    if #available(iOS 26.0, *) {
+        ChatView()
+    } else {
+        Text("Requiere iOS 26.0+")
+    }
 }
-
-
