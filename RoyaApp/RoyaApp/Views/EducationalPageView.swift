@@ -87,21 +87,6 @@ struct EducationalView: View {
                     }
                     .padding(.bottom, 8)
                 }
-
-                HStack {
-                    Spacer()
-                    VStack { Image(systemName: "camera.viewfinder"); Text("Escanear").font(.caption) }
-                        .foregroundColor(.green)
-                    Spacer()
-                    VStack { Image(systemName: "clock"); Text("Historial").font(.caption) }
-                    Spacer()
-                    VStack { Image(systemName: "person.fill"); Text("Cuenta").font(.caption) }
-                    Spacer()
-                }
-                .padding()
-                .background(Color.white)
-                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-                .shadow(radius: 5)
                 
                 // Navegación oculta a ChatView
                 NavigationLink(destination: ChatView(), isActive: $AIChat) {
