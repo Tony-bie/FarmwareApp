@@ -89,34 +89,6 @@ struct HistoryView: View {
                         .padding(.horizontal)
                 }
                 .padding(.vertical, 8)
-                
-                // Bottom tab bar
-                HStack {
-                    Spacer()
-                    VStack {
-                        Image(systemName: "camera.viewfinder")
-                        Text("Escanear")
-                            .font(.caption)
-                    }
-                    .foregroundColor(.green)
-                    Spacer()
-                    VStack {
-                        Image(systemName: "clock")
-                        Text("Historial")
-                            .font(.caption)
-                    }
-                    Spacer()
-                    VStack {
-                        Image(systemName: "person.fill")
-                        Text("Cuenta")
-                            .font(.caption)
-                    }
-                    Spacer()
-                }
-                .padding()
-                .background(Color.white)
-                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-                .shadow(radius: 5)
             }
             .navigationTitle("Historial & Compartir")
             .navigationBarTitleDisplayMode(.inline)

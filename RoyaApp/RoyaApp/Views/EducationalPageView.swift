@@ -9,11 +9,11 @@ import SwiftUI
 import UIKit
 
 
-struct RoyalFileApp: App {
-    var body: some Scene { WindowGroup { RoyalFile() } }
+struct EducationalPageView: App {
+    var body: some Scene { WindowGroup { EducationalPage() } }
 }
 
-struct RoyalFile: View {
+struct EducationalPage: View {
     private let bg = Color(red: 0.93, green: 0.96, blue: 0.91)
 
     private let pQueEs1 =
@@ -94,20 +94,7 @@ struct RoyalFile: View {
                     .padding(.bottom, 8)
                 }
 
-                HStack {
-                    Spacer()
-                    VStack { Image(systemName: "camera.viewfinder"); Text("Escanear").font(.caption) }
-                        .foregroundColor(.green)
-                    Spacer()
-                    VStack { Image(systemName: "clock"); Text("Historial").font(.caption) }
-                    Spacer()
-                    VStack { Image(systemName: "person.fill"); Text("Cuenta").font(.caption) }
-                    Spacer()
-                }
-                .padding()
-                .background(Color.white)
-                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-                .shadow(radius: 5)
+                
             }
             .toolbar(.hidden, for: .navigationBar)
             .background(bg.ignoresSafeArea())
@@ -176,7 +163,7 @@ private struct NumberedRow: View {
     }
 }
 
-#Preview { RoyalFile() }
+#Preview { EducationalPage() }
 
 
 
