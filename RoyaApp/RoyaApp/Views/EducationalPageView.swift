@@ -8,9 +8,11 @@
 import SwiftUI
 import UIKit
 
-
 struct EducationalView: View {
     @State private var AIChat: Bool = false
+    @State private var showUnavailableAlert: Bool = false
+    @StateObject private var aiChecker = AppleIntelligenceChecker()
+    
     private let bg = Color(red: 0.93, green: 0.96, blue: 0.91)
 
     private let pQueEs1 =
@@ -88,11 +90,13 @@ struct EducationalView: View {
                     .padding(.bottom, 8)
                 }
                 
-                // Navegación oculta a ChatView
-                NavigationLink(destination: ChatView(), isActive: $AIChat) {
-                    EmptyView()
+                // Navegación condicional a ChatView
+                if #available(iOS 26.0, *) {
+                    NavigationLink(destination: ChatView(), isActive: $AIChat) {
+                        EmptyView()
+                    }
+                    .hidden()
                 }
-                .hidden()
             }
             .background(bg.ignoresSafeArea())
             .navigationTitle("Roya del Café")
@@ -100,7 +104,7 @@ struct EducationalView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
-                        AIChat = true
+                        handleAIChatTap()
                     }) {
                         VStack {
                             Image(systemName: "atom")
@@ -111,15 +115,32 @@ struct EducationalView: View {
                         .padding(.vertical, 6)
                         .frame(minHeight: 44)
                     }
-                    .fullScreenCover(isPresented: $AIChat) {
-                            ChatView()
-                        }
-                    
                 }
-                
+            }
+            .alert("Función no disponible", isPresented: $showUnavailableAlert) {
+                Button("Entendido", role: .cancel) {}
+            } message: {
+                Text(aiChecker.unavailableMessage)
+            }
+            .fullScreenCover(isPresented: $AIChat) {
+                if #available(iOS 26.0, *), aiChecker.isAvailable {
+                    ChatView()
+                }
             }
         }
         .navigationViewStyle(StackNavigationViewStyle())
+    }
+    
+    private func handleAIChatTap() {
+        if #available(iOS 26.0, *) {
+            if aiChecker.isAvailable {
+                AIChat = true
+            } else {
+                showUnavailableAlert = true
+            }
+        } else {
+            showUnavailableAlert = true
+        }
     }
 
     private var escalaImage: some View {
@@ -135,7 +156,7 @@ struct EducationalView: View {
                         Image(systemName: "photo.on.rectangle.angled")
                             .font(.system(size: 36, weight: .semibold))
                             .foregroundColor(.green.opacity(0.7))
-                        Text("Añade la imagen a Assets como “EscalaRoya”")
+                        Text("Añade la imagen a Assets como \"EscalaRoya\"")
                             .font(.footnote)
                             .foregroundStyle(.secondary)
                     }
@@ -181,7 +202,6 @@ private struct NumberedRow: View {
         }
     }
 }
-
 
 #Preview {
     EducationalView()

@@ -48,9 +48,14 @@ struct EscanearView: View {
                                     // Aquí puedes pasar esa URL a ResultadosView si quieres
                                     // o guardarla en Supabase (tabla 'photos')
                                     
-                                    navigateToResults = true
+                                    await MainActor.run {
+                                        navigateToResults = true
+                                    }
                                 } catch {
                                     print("❌ Error subiendo imagen:", error)
+                                    await MainActor.run {
+                                        navigateToResults = true
+                                    }
                                 }
                             }
                         }
