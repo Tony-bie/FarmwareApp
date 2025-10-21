@@ -14,17 +14,19 @@ struct MainView: View {
                 .tabItem {
                     Label("Escanear", systemImage: "qrcode.viewfinder")
                 }
+
             HistoryView()
                 .tabItem {
                     Label("Historial", systemImage: "list.bullet")
                 }
+
             EducationalView()
                 .tabItem {
                     Label("Educación", systemImage: "book")
                 }
             DetalleLote()
                 .tabItem {
-                    Label("Detalle", systemImage: "pencil")
+                    Label("Personal", systemImage: "pencil")
                 }
         }
     }
