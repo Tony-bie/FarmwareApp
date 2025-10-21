@@ -75,21 +75,6 @@ struct HistoryView: View {
                     .padding(.top)
                 }
                 
-                // Export button
-                Button(action: {
-                    print("Export PDF tapped")
-                }) {
-                    Text("Exportar PDF")
-                        .font(.headline)
-                        .foregroundColor(.black)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.white)
-                        .cornerRadius(12)
-                        .padding(.horizontal)
-                }
-                .padding(.vertical, 8)
-                
                
             }
             .navigationTitle("Historial & Compartir")
