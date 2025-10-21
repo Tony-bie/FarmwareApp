@@ -32,6 +32,8 @@ struct LoginView : View {
                 VStack(alignment: .leading){
                     NavigationLink(isActive: $loginVM.isLoggedIn) {
                         MainView()
+                            .navigationBarBackButtonHidden(true)
+
                     } label: {
                         EmptyView()
                     }
