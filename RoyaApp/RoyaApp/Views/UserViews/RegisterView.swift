@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct RegisterView : View {
+    @Environment(\.dismiss) private var dismiss
+    
     @State private var firstName = ""
     @State private var lastName  = ""
     @State private var username  = ""
@@ -19,7 +21,6 @@ struct RegisterView : View {
     @State private var showConfirmPass = false
     @State private var showError = false
     @State private var showSuccess = false
-    @State private var acceptTerms = false
     
     private var emailRegex: Regex<Substring> { /.+@.+\..+/ }
     private var phoneRegex: Regex<Substring> { /^\d{10}$/ }
@@ -83,7 +84,6 @@ struct RegisterView : View {
         return areNamesNonEmpty &&
                isUsernameNonEmpty &&
                isPasswordNonEmpty && passwordsMatch &&
-               acceptTerms &&
                contactOK
     }
     @StateObject private var viewModel = RegisterViewModel()
@@ -200,11 +200,6 @@ struct RegisterView : View {
                         .padding(.trailing, 15)
                         validityTag(isValid: passwordsMatch, text: passwordsMatch ? "Contraseña verificada" : "Contraseña no verificada")
                         
-                        Toggle(isOn: $acceptTerms) {
-                            Text("Acepto los términos y condiciones")
-                                .font(.subheadline)
-                        }
-                        .padding(.horizontal, 15)
                         
                         Button{
                             guard isvalidEverything else {return}
@@ -257,12 +252,14 @@ struct RegisterView : View {
         .onChange(of: viewModel.registrationSuccess) { _, newValue in
             if newValue {
                 showSuccess = true
+                
             }
         }
         .alert("Registro exitoso", isPresented: $showSuccess) {
             Button("OK", role: .cancel) {
                 showSuccess = false
                 viewModel.registrationSuccess = false
+                dismiss()
             }
         } message: {
             Text("Tu cuenta se creó correctamente.")
