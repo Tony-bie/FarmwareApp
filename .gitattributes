@@ -2,3 +2,4 @@
 *.zip filter=lfs diff=lfs merge=lfs -text
 Assets/Imagenes/Roya[[:space:]]Images[[:space:]]2.zip filter=lfs diff=lfs merge=lfs -text
 RoyaApp/RoyaApp/Models/RoyaClassifier.mlproj/Checkpoints/**/features.bin filter=lfs diff=lfs merge=lfs -text
+RoyaApp/RoyaApp/Models/RoyaClassifier[[:space:]]2.mlproj/Checkpoints/**/*.bin filter=lfs diff=lfs merge=lfs -text
