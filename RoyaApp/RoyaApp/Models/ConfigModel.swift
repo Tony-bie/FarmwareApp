@@ -30,7 +30,7 @@ class ConfigModel: ObservableObject {
     @Published var isDeleted: Bool = false
     
     func saveChanges(userId: Int, data: UpdateData) async {
-        guard let url = URL(string: "http://10.22.193.199:8000/users/\(userId)") else {
+        guard let url = URL(string: "https://farmwareapp.onrender.com/users/\(userId)") else {
             errorMessage = "URL inválida"
             return
         }
@@ -59,7 +59,7 @@ class ConfigModel: ObservableObject {
             }
     }
     func deleteAccount(userId: Int, delete: DeleteIn) async {
-        guard let url = URL(string: "http://10.22.193.199:8000/users/\(userId)") else {
+        guard let url = URL(string: "https://farmwareapp.onrender.com/users/\(userId)") else {
             errorMessage = "URL inválida"
             return
         }
