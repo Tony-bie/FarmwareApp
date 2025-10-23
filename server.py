@@ -65,7 +65,7 @@ class DeleteIn(BaseModel):
     
 @app.get("/")
 def root():
-    return {"status": "ok"}
+    return RedirectResponse(url="/login")
 
 
 # ---------------------- Obtener imágenes (tabla images original) ----------------------
