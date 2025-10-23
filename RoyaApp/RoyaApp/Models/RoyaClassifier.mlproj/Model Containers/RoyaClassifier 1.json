@@ -1,0 +1,139 @@
+{
+  "activityEntities" : [
+    "experimentCreated",
+    [
+      {
+        "createdDate" : "2025-10-22T15:30:58Z",
+        "event" : "experimentCreated",
+        "id" : "263CF770-90CB-4F19-A728-5621C7046434",
+        "subtitle" : "RoyaClassifier 1",
+        "title" : "Model Source Created"
+      }
+    ],
+    "trainingDataAdded",
+    [
+      {
+        "createdDate" : "2025-10-22T15:34:15Z",
+        "event" : "trainingDataAdded",
+        "id" : "8B13799C-F9DB-4B65-951A-2050C9F637D3",
+        "subtitle" : "Roya Images",
+        "title" : "Training Data Added"
+      }
+    ]
+  ],
+  "contentDataResult" : {
+    "createdDate" : "2025-10-22T15:30:58Z"
+  },
+  "createdDate" : "2025-10-22T15:30:58Z",
+  "evaluationContainerEntity" : {
+    "createdDate" : "2025-10-22T15:35:22Z",
+    "evaluationEntities" : [
+
+    ],
+    "id" : "61c4378d-a15d-4b69-8978-1f56b445a850",
+    "modifiedDate" : "2025-10-22T15:35:22Z",
+    "previewType" : "imageClassifier",
+    "testingEvaluationEntity" : {
+      "analysedDataType" : "none",
+      "createdDate" : "2025-10-22T15:30:58Z",
+      "dataResult" : {
+        "createdDate" : "2025-10-22T15:30:58Z"
+      },
+      "id" : "40ba1f49-f430-447f-8dbe-3204a9805da0"
+    },
+    "trainingEvaluationEntity" : {
+      "analysedDataType" : "none",
+      "createdDate" : "2025-10-22T15:30:58Z",
+      "dataResult" : {
+        "createdDate" : "2025-10-22T15:30:58Z"
+      },
+      "id" : "05e5e4d8-bc4f-4968-ae00-b547a8e7e755"
+    },
+    "validationEvaluationEntity" : {
+      "analysedDataType" : "auto",
+      "createdDate" : "2025-10-22T15:30:58Z",
+      "dataResult" : {
+        "createdDate" : "2025-10-22T15:30:58Z"
+      },
+      "id" : "b785e46a-b264-4e15-82f1-30a555832726"
+    }
+  },
+  "evaluationEntity" : {
+    "analysedDataType" : "none",
+    "dataResult" : {
+
+    },
+    "id" : "6aa82db8-477c-4060-aa85-e0a52dea4461"
+  },
+  "evaluationState" : "uninitialized",
+  "id" : "52F247B2-A420-45D6-8FC8-473425ABE8A8",
+  "modelEntity" : {
+    "createdDate" : "2025-10-22T15:30:58Z",
+    "experimentID" : "52F247B2-A420-45D6-8FC8-473425ABE8A8",
+    "id" : "B3D0D62D-B4C4-4F38-A275-534A90F6DC72",
+    "modifiedDate" : "2025-10-22T15:30:58Z",
+    "title" : "",
+    "version" : "1.0"
+  },
+  "modifiedDate" : "2025-10-22T15:35:22Z",
+  "preferredFilename" : "RoyaClassifier 1",
+  "settingEntity" : {
+    "algorithmType" : "maxEnt",
+    "augmentations" : [
+
+    ],
+    "featureExtractorType" : "scenePrintV1",
+    "featureNames" : [
+
+    ],
+    "handActionClassifierAugmentations" : [
+
+    ],
+    "handPoseClassifierAugmentations" : [
+
+    ],
+    "harVideoAugmentations" : 0,
+    "seedType" : "default",
+    "styleTransferAlgorithmType" : "image",
+    "taskType" : "imageClassifier",
+    "transferLearningEmbeddingType" : "dynamic"
+  },
+  "snapshotRole" : {
+    "withoutSnapshots" : 0
+  },
+  "state" : "uninitialized",
+  "title" : "RoyaClassifier 1",
+  "trainingEntity" : {
+    "analysedDataType" : "datasource",
+    "checkpointMetrics" : {
+
+    },
+    "dataResult" : {
+      "createdDate" : "2025-10-22T15:30:58Z",
+      "dataSourceID" : "52CE9796-0C09-402E-A3D5-3F2C990140B5",
+      "dataURL" : "file:///Users/Alumno/Documents/Repositorios/FarmwareApp/Assets/Roya%20Images/"
+    },
+    "dataSourceID" : "52CE9796-0C09-402E-A3D5-3F2C990140B5",
+    "featureExtractionCheckpointMayBeAvailable" : false,
+    "progress" : [
+
+    ],
+    "snapshottableCheckpoints" : {
+
+    }
+  },
+  "validationEntity" : {
+    "analysedDataType" : "auto",
+    "dataResult" : {
+      "createdDate" : "2025-10-22T15:30:58Z"
+    },
+    "splitOptions" : {
+      "strategy" : {
+        "automatic" : {
+
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

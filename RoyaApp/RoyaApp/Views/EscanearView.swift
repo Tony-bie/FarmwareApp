@@ -16,99 +16,97 @@ struct EscanearView: View {
     @State private var etapa: String = "cosecha"
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                Color(red: 0.89, green: 0.93, blue: 0.88)
-                    .ignoresSafeArea()
+        ZStack {
+            Color(red: 0.89, green: 0.93, blue: 0.88)
+                .ignoresSafeArea()
+            
+            VStack {
+                Text("Escanear Cosecha")
+                    .font(.title)
+                    .bold()
+                    .padding()
                 
-                VStack {
-                    Text("Escanear Cosecha")
-                        .font(.title)
-                        .bold()
-                        .padding()
+                ZStack {
+                    CamaraPreview(session: camera.getSession())
+                        .cornerRadius(10)
                     
-                    ZStack {
-                        CamaraPreview(session: camera.getSession())
+                    if let image = camera.capturedImage {
+                        Image(uiImage: image)
+                            .resizable()
+                            .scaledToFit()
                             .cornerRadius(10)
-                        
-                        if let image = camera.capturedImage {
-                            Image(uiImage: image)
-                                .resizable()
-                                .scaledToFit()
-                                .cornerRadius(10)
-                        }
                     }
-                    .frame(width: 300, height: 400)
-                    .onChange(of: camera.capturedImage) { _, newImage in
-                        if let image = newImage {
-                            Task {
-                                do {
-                                    let url = try await ImageUploader.uploadImage(image, etapa: etapa)
-                                    print("✅ Imagen subida con URL:", url)
-                                    // Aquí puedes pasar esa URL a ResultadosView si quieres
-                                    // o guardarla en Supabase (tabla 'photos')
-                                    
-                                    await MainActor.run {
-                                        navigateToResults = true
-                                    }
-                                } catch {
-                                    print("❌ Error subiendo imagen:", error)
-                                    await MainActor.run {
-                                        navigateToResults = true
-                                    }
+                }
+                .frame(width: 300, height: 400)
+                .onChange(of: camera.capturedImage) { _, newImage in
+                    if let image = newImage {
+                        Task {
+                            do {
+                                let url = try await ImageUploader.uploadImage(image, etapa: etapa)
+                                print("✅ Imagen subida con URL:", url)
+                                // Aquí puedes pasar esa URL a ResultadosView si quieres
+                                // o guardarla en Supabase (tabla 'photos')
+                                
+                                await MainActor.run {
+                                    navigateToResults = true
+                                }
+                            } catch {
+                                print("❌ Error subiendo imagen:", error)
+                                await MainActor.run {
+                                    navigateToResults = true
                                 }
                             }
                         }
                     }
-                    
-                    Text("Por favor asegurate que los cultivos están enfocados y bien iluminados")
-                        .font(.footnote)
-                        .padding()
-                    
-                    HStack {
-                        Button {
-                            camera.takePhoto()
-                        } label: {
-                            Circle()
-                                .fill(Color.white)
-                                .frame(width: 80, height: 80)
-                                .shadow(radius: 5)
-                                .overlay(Circle().stroke(Color.black, lineWidth: 3))
-                        }
-                        
-                        Spacer().frame(width: 40)
-                        
-                        Button {
-                            showImagePicker = true
-                        } label: {
-                            Image(systemName: "photo.on.rectangle")
-                                .resizable()
-                                .frame(width: 50, height: 40)
-                                .foregroundColor(.black)
-                        }
-                    }
+                }
+                
+                Text("Por favor asegurate que los cultivos están enfocados y bien iluminados")
+                    .font(.footnote)
                     .padding()
-                }
-                .onAppear {
-                    camera.capturedImage = nil
-                    navigateToResults = false
-                }
-                .sheet(isPresented: $showImagePicker, onDismiss: {
-                    if camera.capturedImage != nil {
-                        navigateToResults = true
+                
+                HStack {
+                    Button {
+                        camera.takePhoto()
+                    } label: {
+                        Circle()
+                            .fill(Color.white)
+                            .frame(width: 80, height: 80)
+                            .shadow(radius: 5)
+                            .overlay(Circle().stroke(Color.black, lineWidth: 3))
                     }
-                }) {
-                    ImagePicker(selectedImage: $camera.capturedImage,
-                                sourceType: .photoLibrary)
+                    
+                    Spacer().frame(width: 40)
+                    
+                    Button {
+                        showImagePicker = true
+                    } label: {
+                        Image(systemName: "photo.on.rectangle")
+                            .resizable()
+                            .frame(width: 50, height: 40)
+                            .foregroundColor(.black)
+                    }
                 }
+                .padding()
             }
-            .navigationDestination(isPresented: $navigateToResults) {
-                Group {
-                    if let image = camera.capturedImage {
-                        ResultadosView(image: image /* , url: uploadedURL */)
-                    } else {
-                        EmptyView()
-                    }
+            .onAppear {
+                camera.capturedImage = nil
+                navigateToResults = false
+            }
+            .sheet(isPresented: $showImagePicker, onDismiss: {
+                if camera.capturedImage != nil {
+                    navigateToResults = true
+                }
+            }) {
+                ImagePicker(selectedImage: $camera.capturedImage,
+                            sourceType: .photoLibrary)
+            }
+        }
+        .navigationDestination(isPresented: $navigateToResults) {
+            Group {
+                if let image = camera.capturedImage {
+                    ResultadosView(image: image)
+                } else {
+                    EmptyView()
                 }
             }
         }

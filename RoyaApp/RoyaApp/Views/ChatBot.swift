@@ -14,10 +14,13 @@ struct ChatView: View {
     @State private var showError: Bool = false
     @State private var errorMessage: String = ""
     @Environment(\.dismiss) private var dismiss
+    
+    // Estado para manejar el teclado
+    @FocusState private var isTextFieldFocused: Bool
 
     var body: some View {
         NavigationStack {
-            VStack {
+            VStack(spacing: 0) {
                 // ScrollView para mensajes
                 ScrollViewReader { proxy in
                     ScrollView {
@@ -48,6 +51,7 @@ struct ChatView: View {
                         .padding(4)
                         .background(Color(.systemBackground))
                         .cornerRadius(8)
+                        .focused($isTextFieldFocused)
 
                     Button {
                         sendMessage()
@@ -61,10 +65,10 @@ struct ChatView: View {
                     .disabled(prompt.isEmpty || viewModel.isResponding)
                 }
                 .padding()
+                .background(Color(.systemBackground))
             }
             .navigationTitle("Chat AI")
             .background(Color(.secondarySystemBackground))
-            .ignoresSafeArea(.keyboard, edges: .bottom)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: {
@@ -72,6 +76,14 @@ struct ChatView: View {
                     }) {
                         Image(systemName: "xmark")
                             .foregroundColor(.primary)
+                    }
+                }
+                
+                // Botón para cerrar el teclado
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Listo") {
+                        isTextFieldFocused = false
                     }
                 }
             }
@@ -109,6 +121,9 @@ struct ChatView: View {
         viewModel.messages.append(userMessage)
         let messageToSend = prompt
         prompt = ""
+        
+        // Cerrar el teclado después de enviar
+        isTextFieldFocused = false
 
         Task {
             viewModel.isResponding = true

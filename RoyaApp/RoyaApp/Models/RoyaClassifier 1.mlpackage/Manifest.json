@@ -1,0 +1,24 @@
+{
+    "fileFormatVersion": "1.0.0",
+    "itemInfoEntries": {
+        "02578054-A194-48CF-8E8C-1FFC446794A1": {
+            "author": "com.apple.CoreML",
+            "description": "CoreML Model Specification",
+            "name": "RoyaClassifier 1.mlmodel",
+            "path": "com.apple.CoreML/RoyaClassifier 1.mlmodel"
+        },
+        "5CEA6573-AA40-4BC3-B00A-99C01DDB5DD3": {
+            "author": "com.apple.CoreML",
+            "description": "External FeatureDescription Overlay",
+            "name": "FeatureDescriptions.json",
+            "path": "com.apple.CoreML/FeatureDescriptions.json"
+        },
+        "74639066-7F69-4FF0-A7CD-C7828AFC6F18": {
+            "author": "com.apple.CoreML",
+            "description": "External Metadata Overlay",
+            "name": "Metadata.json",
+            "path": "com.apple.CoreML/Metadata.json"
+        }
+    },
+    "rootModelIdentifier": "02578054-A194-48CF-8E8C-1FFC446794A1"
+}

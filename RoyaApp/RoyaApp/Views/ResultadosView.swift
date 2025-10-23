@@ -74,7 +74,7 @@ struct ResultadosView: View {
             }
             
             // Cargar el modelo generado por Core ML
-            guard let model = try? VNCoreMLModel(for: RoyaClassifier_1().model) else {
+            guard let model = try? VNCoreMLModel(for: RoyaClassifier_2().model) else {
                 resultado = "No se pudo cargar el modelo"
                 return
             }

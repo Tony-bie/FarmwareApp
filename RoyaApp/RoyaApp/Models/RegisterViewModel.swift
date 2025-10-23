@@ -18,7 +18,7 @@ class RegisterViewModel: ObservableObject {
     @Published var errorMessage: String?
 
     func register(user: RegisterUser) async {
-        guard let url = URL(string: "http://127.0.0.1:8000/register") else {
+        guard let url = URL(string: "http://10.22.193.199:8000/register") else {
             errorMessage = "URL inválida"
             return
         }

@@ -1,0 +1,113 @@
+{
+  "activityEntities" : [
+    "dataSourceMetrics",
+    [
+      {
+        "createdDate" : "2025-10-20T18:28:29Z",
+        "event" : "dataSourceMetrics",
+        "id" : "EC456218-409C-4626-9870-E0BB86D7743B",
+        "subtitle" : "6 Classes, 9.749 Items",
+        "title" : "Data Summary"
+      },
+      {
+        "createdDate" : "2025-10-20T18:33:16Z",
+        "event" : "dataSourceMetrics",
+        "id" : "1C57838A-6002-4FD6-B26C-16DF0852CCAF",
+        "subtitle" : "6 Classes, 9.749 Items",
+        "title" : "Data Summary"
+      },
+      {
+        "createdDate" : "2025-10-22T14:25:42Z",
+        "event" : "dataSourceMetrics",
+        "id" : "BA1130FB-D48F-4E6E-BA02-166B23B5E855",
+        "subtitle" : "6 Classes, 9.749 Items",
+        "title" : "Data Summary"
+      },
+      {
+        "createdDate" : "2025-10-22T15:07:05Z",
+        "event" : "dataSourceMetrics",
+        "id" : "CCB1E115-31C8-4FC0-8660-57EE34D97952",
+        "subtitle" : "6 Classes, 9.749 Items",
+        "title" : "Data Summary"
+      },
+      {
+        "createdDate" : "2025-10-22T15:18:56Z",
+        "event" : "dataSourceMetrics",
+        "id" : "FFD27FCE-0DDB-4423-8932-6086C2120DBE",
+        "subtitle" : "6 Classes, 9.743 Items",
+        "title" : "Data Summary"
+      }
+    ],
+    "dataSourceTrainingStarted",
+    [
+      {
+        "createdDate" : "2025-10-20T18:28:29Z",
+        "event" : "dataSourceTrainingStarted",
+        "id" : "5BA4C06F-0E4A-43F2-87A3-48FFE87D698B",
+        "subtitle" : "RoyaClassifier 1",
+        "title" : "Used By"
+      },
+      {
+        "createdDate" : "2025-10-20T18:33:16Z",
+        "event" : "dataSourceTrainingStarted",
+        "id" : "140BEA85-9014-47C0-BAF4-688517774AD9",
+        "subtitle" : "RoyaClassifier 1",
+        "title" : "Used By"
+      },
+      {
+        "createdDate" : "2025-10-22T14:25:42Z",
+        "event" : "dataSourceTrainingStarted",
+        "id" : "EA1A1761-4ABD-43F1-BC6B-4CE8BB0B0B78",
+        "subtitle" : "RoyaClassifier 1",
+        "title" : "Used By"
+      },
+      {
+        "createdDate" : "2025-10-22T15:07:05Z",
+        "event" : "dataSourceTrainingStarted",
+        "id" : "2A7BA414-0B35-40F6-AC49-45360B34737A",
+        "subtitle" : "RoyaClassifier 1",
+        "title" : "Used By"
+      },
+      {
+        "createdDate" : "2025-10-22T15:18:56Z",
+        "event" : "dataSourceTrainingStarted",
+        "id" : "2081C017-C309-4010-9557-238EF45DCE11",
+        "subtitle" : "RoyaClassifier 2",
+        "title" : "Used By"
+      }
+    ],
+    "dataSourceCreated",
+    [
+      {
+        "createdDate" : "2025-10-20T18:28:23Z",
+        "event" : "dataSourceCreated",
+        "id" : "E6BB88FA-BB31-4F62-9767-B3D736151F88",
+        "subtitle" : "Roya Images",
+        "title" : "Data Source Created"
+      }
+    ]
+  ],
+  "createdDate" : "2025-10-20T18:28:23Z",
+  "dataPathRelativeToProjectURL" : "../../../../../../../../../Desktop/Roya%20Images/",
+  "dataResult" : {
+    "createdDate" : "2025-10-20T18:28:23Z",
+    "dataSourceID" : "7A67B2C9-EA75-4CD3-BD69-1352A2BAE096",
+    "dataURL" : "file:///Users/palomabelenguer/Desktop/Roya%20Images/",
+    "error" : {
+      "code" : 2,
+      "domain" : "MLRecipeCreateMLAdaptor.RecipeSession.DataAccessError",
+      "errorType" : "error",
+      "reason" : "File not present at \"Roya Images\""
+    }
+  },
+  "dataURL" : "file:///Users/palomabelenguer/Desktop/Roya%20Images/",
+  "experimentIDs" : [
+    "E52D31D4-2BA0-46E0-A030-CD4CD3B3DFDF"
+  ],
+  "id" : "7A67B2C9-EA75-4CD3-BD69-1352A2BAE096",
+  "modifiedDate" : "2025-10-22T15:44:26Z",
+  "pathType" : 0,
+  "preferredFilename" : "Roya Images",
+  "title" : "Roya Images",
+  "version" : "1.0"
+}

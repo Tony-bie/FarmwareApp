@@ -1,0 +1,29 @@
+{
+  "activityEntities" : [
+    "projectCreated",
+    [
+      {
+        "createdDate" : "2025-10-01T20:30:41Z",
+        "event" : "projectCreated",
+        "id" : "41C55CDA-2560-456E-B1BA-22E4F3632BF4",
+        "subtitle" : "RoyaClassifier",
+        "title" : "Project Created"
+      }
+    ]
+  ],
+  "authorName" : "Paloma Belenguer",
+  "createdDate" : "2025-10-01T20:30:41Z",
+  "description" : "",
+  "id" : "CB90E32D-4DD9-4CA7-9339-9611A428A51A",
+  "license" : "",
+  "location" : "",
+  "modifiedDate" : "2025-10-01T20:30:41Z",
+  "projectName" : "RoyaClassifier",
+  "settingsEntity" : {
+    "snapshotOnExtendTraining" : true,
+    "snapshotOnResumeTraining" : false
+  },
+  "taskType" : "imageClassifier",
+  "title" : "Image Classification",
+  "version" : "1.1"
+}

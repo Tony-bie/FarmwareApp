@@ -28,7 +28,7 @@ class LoginModel: ObservableObject{
         
         errorMessage = nil
         isLoggedIn = false
-        guard let url = URL(string: "http://127.0.0.1:8000/login") else {
+        guard let url = URL(string: "http://10.22.193.199:8000/login") else {
             errorMessage = "URL invalida"
             return }
         do{
