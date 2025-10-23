@@ -62,6 +62,10 @@ class UpdateUser(BaseModel):
 
 class DeleteIn(BaseModel):
     current_password: str
+    
+@app.get("/")
+def root():
+    return {"status": "ok"}
 
 
 # ---------------------- Obtener imágenes (tabla images original) ----------------------

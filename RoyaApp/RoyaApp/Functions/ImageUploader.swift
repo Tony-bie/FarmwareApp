@@ -9,7 +9,7 @@ import UIKit
 
 struct ImageUploader {
     static func uploadImage(_ image: UIImage, etapa: String, comentario: String? = nil) async throws -> String {
-        guard let url = URL(string: "http://10.22.193.199:8000/upload") else { throw URLError(.badURL) }
+        guard let url = URL(string: "https://farmwareapp.onrender.com/upload") else { throw URLError(.badURL) }
         guard let imageData = image.jpegData(compressionQuality: 0.8) else { throw URLError(.cannotDecodeContentData) }
         
         var request = URLRequest(url: url)

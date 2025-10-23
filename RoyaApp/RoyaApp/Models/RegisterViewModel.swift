@@ -18,7 +18,7 @@ class RegisterViewModel: ObservableObject {
     @Published var errorMessage: String?
 
     func register(user: RegisterUser) async {
-        guard let url = URL(string: "http://10.22.193.199:8000/register") else {
+        guard let url = URL(string: "https://farmwareapp.onrender.com/register") else {
             errorMessage = "URL inválida"
             return
         }

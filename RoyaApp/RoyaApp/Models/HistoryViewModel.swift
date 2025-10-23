@@ -68,7 +68,7 @@ class HistoryViewModel: ObservableObject {
     
     func loadAPI() async throws {
         // Ajusta el host si cambias de entorno
-        guard let url = URL(string: "http://10.22.193.199:8000/photos") else {
+        guard let url = URL(string: "https://farmwareapp.onrender.com/photos") else {
             throw URLError(.badURL)
         }
         
