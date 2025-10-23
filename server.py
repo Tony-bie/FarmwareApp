@@ -7,6 +7,8 @@ import requests
 import os
 from passlib.context import CryptContext
 from passlib.exc import UnknownHashError
+from fastapi.responses import RedirectResponse, HTMLResponse
+
 
 # -------------------- Encriptación --------------------
 pwd_context = CryptContext(
