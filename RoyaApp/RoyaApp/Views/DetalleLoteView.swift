@@ -1,26 +1,17 @@
+//  Created by Paloma Belenguer
 import SwiftUI
 import CoreLocation
 import MapKit
-
-// Wrapper Identifiable para anotaciones en iOS 16
-private struct MapPin: Identifiable {
-    let id = UUID()
-    let coordinate: CLLocationCoordinate2D
-}
 
 struct DetalleLote: View {
     @StateObject private var vm = WeatherModel()
     @StateObject private var locationManager = LocationManager()
 
-   
+    // Ubicación por defecto (Monterrey)
     private let defaultLocation = CLLocation(latitude: 25.6866, longitude: -100.3161)
     private var effectiveLocation: CLLocation { locationManager.location ?? defaultLocation }
 
-    // Estado del mapa (iOS 16 + iOS 17)
-    @State private var region = MKCoordinateRegion(
-        center: CLLocationCoordinate2D(latitude: 19.4326, longitude: -99.1332),
-        span: MKCoordinateSpan(latitudeDelta: 0.08, longitudeDelta: 0.08)
-    )
+    // Solo usamos cámara (iOS 17+)
     @State private var camera: MapCameraPosition = .region(
         MKCoordinateRegion(
             center: CLLocationCoordinate2D(latitude: 19.4326, longitude: -99.1332),
@@ -48,12 +39,15 @@ struct DetalleLote: View {
                     }
                     .padding(.top, 8)
 
-                    // Mapa con pin
-                    mapSection
-                        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                        .frame(height: 200)
+                    // Mapa (iOS 17+)
+                    Map(position: $camera, interactionModes: []) {
+                        Marker("Aquí estás", coordinate: effectiveLocation.coordinate)
+                    }
+                    .allowsHitTesting(false)
+                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    .frame(height: 200)
 
-                    // Tarjeta de clima (usa propiedades de WeatherModel)
+                    // Tarjeta de clima
                     Group {
                         if let t = vm.temperature {
                             weatherCard(
@@ -72,20 +66,19 @@ struct DetalleLote: View {
                         } else {
                             weatherCardLoading
                         }
-                        NavigationLink{
-                            ConfigView()
-                                .toolbar(.hidden, for: .tabBar)
+
+                        NavigationLink {
+                            ConfigView().toolbar(.hidden, for: .tabBar)
                         } label: {
                             Text("Configuración")
                         }
-                        NavigationLink{
+
+                        NavigationLink {
                             LoginView()
                                 .navigationBarBackButtonHidden(true)
                                 .toolbar(.hidden, for: .tabBar)
-
                         } label: {
                             Text("Cerrar sesión")
-
                         }
                     }
 
@@ -95,7 +88,6 @@ struct DetalleLote: View {
             }
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
-            // Traer clima y recentrar cuando cambie la ubicación (o al entrar)
             .task(id: effectiveLocationKey) {
                 let c = effectiveLocation.coordinate
                 await vm.fetch(lat: c.latitude, lon: c.longitude)
@@ -106,40 +98,13 @@ struct DetalleLote: View {
 
     // MARK: - Helpers
     private func recenterMap(to c: CLLocationCoordinate2D) {
-        region.center = c
         camera = .region(MKCoordinateRegion(
             center: c,
             span: MKCoordinateSpan(latitudeDelta: 0.08, longitudeDelta: 0.08)
         ))
     }
 
-    // MARK: - Map (iOS 17 / iOS 16)
-    @ViewBuilder
-    private var mapSection: some View {
-        if #available(iOS 17.0, *) {
-            Map(position: $camera, interactionModes: []) {
-                Marker("Aquí estás", coordinate: effectiveLocation.coordinate)
-            }
-            .allowsHitTesting(false)
-        } else {
-            Map(
-                coordinateRegion: $region,
-                interactionModes: [],
-                showsUserLocation: false,
-                annotationItems: [MapPin(coordinate: effectiveLocation.coordinate)]
-            ) { pin in
-                MapAnnotation(coordinate: pin.coordinate) {
-                    Image(systemName: "mappin.circle.fill")
-                        .font(.system(size: 34))
-                        .foregroundColor(.red)
-                        .shadow(radius: 2)
-                }
-            }
-            .allowsHitTesting(false)
-        }
-    }
-
-    // MARK: - UI clima (desde valores del VM)
+    // MARK: - UI clima
     @ViewBuilder
     private func weatherCard(
         temperatureC: Double,
