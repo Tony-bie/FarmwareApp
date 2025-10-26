@@ -86,6 +86,10 @@ struct RegisterView : View {
                isPasswordNonEmpty && passwordsMatch &&
                contactOK
     }
+
+
+
+    
     @StateObject private var viewModel = RegisterViewModel()
 
     var body: some View {

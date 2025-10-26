@@ -6,11 +6,38 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		EA5E51522EAAF059008205EC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FB22F1232E735EDD002F233B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FB22F12A2E735EDD002F233B;
+			remoteInfo = RoyaApp;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		EA5E514E2EAAF059008205EC /* RoyaAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RoyaAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB22F12B2E735EDD002F233B /* RoyaApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RoyaApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		EA5E51642EAAFD0C008205EC /* Exceptions for "RoyaAppTests" folder in "RoyaApp" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				RoyaAppTests.swift,
+				Validation.swift,
+			);
+			target = FB22F12A2E735EDD002F233B /* RoyaApp */;
+		};
+		EA5E51652EAAFD0C008205EC /* Exceptions for "RoyaAppTests" folder in "RoyaAppTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				RoyaAppTests.swift,
+				Validation.swift,
+			);
+			target = EA5E514D2EAAF059008205EC /* RoyaAppTests */;
+		};
 		FB22F18F2E7362C9002F233B /* Exceptions for "RoyaApp" folder in "RoyaApp" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -21,6 +48,15 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		EA5E51612EAAFD0C008205EC /* RoyaAppTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				EA5E51642EAAFD0C008205EC /* Exceptions for "RoyaAppTests" folder in "RoyaApp" target */,
+				EA5E51652EAAFD0C008205EC /* Exceptions for "RoyaAppTests" folder in "RoyaAppTests" target */,
+			);
+			path = RoyaAppTests;
+			sourceTree = "<group>";
+		};
 		FB22F12D2E735EDD002F233B /* RoyaApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -32,6 +68,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		EA5E514B2EAAF059008205EC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FB22F1282E735EDD002F233B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -45,6 +88,7 @@
 		FB22F1222E735EDD002F233B = {
 			isa = PBXGroup;
 			children = (
+				EA5E51612EAAFD0C008205EC /* RoyaAppTests */,
 				FB22F12D2E735EDD002F233B /* RoyaApp */,
 				FB22F12C2E735EDD002F233B /* Products */,
 			);
@@ -54,6 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				FB22F12B2E735EDD002F233B /* RoyaApp.app */,
+				EA5E514E2EAAF059008205EC /* RoyaAppTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -61,6 +106,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		EA5E514D2EAAF059008205EC /* RoyaAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EA5E51542EAAF059008205EC /* Build configuration list for PBXNativeTarget "RoyaAppTests" */;
+			buildPhases = (
+				EA5E514A2EAAF059008205EC /* Sources */,
+				EA5E514B2EAAF059008205EC /* Frameworks */,
+				EA5E514C2EAAF059008205EC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EA5E51532EAAF059008205EC /* PBXTargetDependency */,
+			);
+			name = RoyaAppTests;
+			packageProductDependencies = (
+			);
+			productName = RoyaAppTests;
+			productReference = EA5E514E2EAAF059008205EC /* RoyaAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		FB22F12A2E735EDD002F233B /* RoyaApp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = FB22F1362E735EE1002F233B /* Build configuration list for PBXNativeTarget "RoyaApp" */;
@@ -74,6 +139,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				EA5E51612EAAFD0C008205EC /* RoyaAppTests */,
 				FB22F12D2E735EDD002F233B /* RoyaApp */,
 			);
 			name = RoyaApp;
@@ -90,9 +156,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1640;
+				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 1640;
 				TargetAttributes = {
+					EA5E514D2EAAF059008205EC = {
+						CreatedOnToolsVersion = 26.0.1;
+						TestTargetID = FB22F12A2E735EDD002F233B;
+					};
 					FB22F12A2E735EDD002F233B = {
 						CreatedOnToolsVersion = 16.4;
 					};
@@ -113,11 +183,19 @@
 			projectRoot = "";
 			targets = (
 				FB22F12A2E735EDD002F233B /* RoyaApp */,
+				EA5E514D2EAAF059008205EC /* RoyaAppTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		EA5E514C2EAAF059008205EC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FB22F1292E735EDD002F233B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -128,6 +206,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		EA5E514A2EAAF059008205EC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FB22F1272E735EDD002F233B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -137,7 +222,57 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		EA5E51532EAAF059008205EC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FB22F12A2E735EDD002F233B /* RoyaApp */;
+			targetProxy = EA5E51522EAAF059008205EC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		EA5E51552EAAF059008205EC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = F7M44D73KV;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Project.RoyaAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RoyaApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/RoyaApp";
+			};
+			name = Debug;
+		};
+		EA5E51562EAAF059008205EC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = F7M44D73KV;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Project.RoyaAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RoyaApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/RoyaApp";
+			};
+			name = Release;
+		};
 		FB22F1342E735EE1002F233B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -264,7 +399,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = S3TQJ5Q5A7;
+				DEVELOPMENT_TEAM = F7M44D73KV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RoyaApp/Info.plist;
@@ -281,7 +416,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.itesm.RoyaApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.itesm.RoyaApp1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -299,7 +434,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = S3TQJ5Q5A7;
+				DEVELOPMENT_TEAM = F7M44D73KV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RoyaApp/Info.plist;
@@ -316,7 +451,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.itesm.RoyaApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.itesm.RoyaApp1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -330,6 +465,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		EA5E51542EAAF059008205EC /* Build configuration list for PBXNativeTarget "RoyaAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EA5E51552EAAF059008205EC /* Debug */,
+				EA5E51562EAAF059008205EC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		FB22F1262E735EDD002F233B /* Build configuration list for PBXProject "RoyaApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
